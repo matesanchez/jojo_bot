@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
 import { Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
 import { Message } from "@/lib/types";
 import CitationCard from "./CitationCard";
@@ -75,7 +76,7 @@ export default function MessageBubble({ message }: Props) {
 
           {/* Markdown content */}
           <div className="prose prose-sm max-w-none text-gray-800">
-            <ReactMarkdown>{message.content}</ReactMarkdown>
+            <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{message.content}</ReactMarkdown>
           </div>
         </div>
 

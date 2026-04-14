@@ -6,15 +6,12 @@ import re
 import sys
 from pathlib import Path
 
-import anthropic
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from config import settings
+from config import settings, VALID_INSTRUMENTS
+from rag.generator import _get_client, _collect_text
 from rag.retriever import retrieve
 
 logger = logging.getLogger(__name__)
-
-MODEL = "claude-sonnet-4-20250514"
 
 PURIFICATION_TYPE_LABELS = {
     "affinity": "Affinity Chromatography (His-tag)",
@@ -24,6 +21,28 @@ PURIFICATION_TYPE_LABELS = {
     "hydrophobic": "Hydrophobic Interaction Chromatography",
     "mixed": "Mixed / Multi-step Purification",
 }
+
+VALID_PURIFICATION_TYPES = set(PURIFICATION_TYPE_LABELS.keys())
+
+
+def _validate_instrument(instrument: str) -> str:
+    """Validate instrument against whitelist; raise ValueError if invalid."""
+    if instrument not in VALID_INSTRUMENTS:
+        raise ValueError(
+            f"Invalid instrument '{instrument}'. "
+            f"Must be one of: {sorted(VALID_INSTRUMENTS)}"
+        )
+    return instrument
+
+
+def _validate_purification_type(purification_type: str) -> str:
+    """Validate purification_type against whitelist."""
+    if purification_type not in VALID_PURIFICATION_TYPES:
+        raise ValueError(
+            f"Invalid purification_type '{purification_type}'. "
+            f"Must be one of: {sorted(VALID_PURIFICATION_TYPES)}"
+        )
+    return purification_type
 
 
 async def generate_protocol(
@@ -39,20 +58,31 @@ async def generate_protocol(
     Generate a complete purification protocol using Claude, grounded in ÄKTA manual best practices.
 
     Returns:
-        {
-            "protocol_markdown": str,
-            "protocol_title": str,
-            "warnings": list[str]
-        }
+        {"protocol_markdown": str, "protocol_title": str, "warnings": list[str]}
     """
-    # Retrieve relevant chunks
-    search_query = (
-        f"{purification_type} purification {target_protein} {instrument} column equilibration gradient"
-    )
-    chunks = retrieve(query=search_query, instrument_filter=instrument if instrument != "general" else None, k=8)
+    # --- Input validation ---
+    instrument = _validate_instrument(instrument)
+    purification_type = _validate_purification_type(purification_type)
 
-    # Build context
-    context_lines = []
+    # Sanitise free-text fields — strip null bytes and limit length
+    target_protein = target_protein.replace("\x00", "").strip()[:200]
+    column = (column or "").replace("\x00", "").strip()[:100] or None
+    sample_volume = (sample_volume or "").replace("\x00", "").strip()[:50] or None
+    additional_notes = (additional_notes or "").replace("\x00", "").strip()[:500] or None
+
+    if not target_protein:
+        raise ValueError("target_protein cannot be empty.")
+
+    # --- Retrieve relevant chunks ---
+    search_query = (
+        f"{purification_type} purification {target_protein} "
+        f"{instrument} column equilibration gradient"
+    )
+    instrument_filter = instrument if instrument not in ("general",) else None
+    chunks = retrieve(query=search_query, instrument_filter=instrument_filter, k=8)
+
+    # --- Build context block ---
+    context_lines: list[str] = []
     for i, chunk in enumerate(chunks, 1):
         title = chunk.get("doc_title", chunk.get("source_file", "Manual"))
         section = chunk.get("section", "")
@@ -65,10 +95,9 @@ async def generate_protocol(
         context_lines.append(header)
         context_lines.append(f'"{chunk["text"]}"')
         context_lines.append("")
-
     context_block = "\n".join(context_lines)
 
-    purification_label = PURIFICATION_TYPE_LABELS.get(purification_type, purification_type.replace("_", " ").title())
+    purification_label = PURIFICATION_TYPE_LABELS[purification_type]
     column_str = column or "to be selected"
     sample_volume_str = sample_volume or "not specified"
     notes_str = additional_notes or "none"
@@ -131,11 +160,11 @@ Which manuals and sections this protocol is based on.
 Be specific and practical. Lab scientists should be able to follow this protocol step by step.
 """
 
-    client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key.get_secret_value())
+    client = _get_client()
 
     try:
         response = await client.messages.create(
-            model=MODEL,
+            model=settings.claude_model,
             max_tokens=4096,
             temperature=0.2,
             system=(
@@ -148,23 +177,23 @@ Be specific and practical. Lab scientists should be able to follow this protocol
             tools=[{"type": "web_search_20250305", "name": "web_search"}],
         )
 
-        protocol_text = ""
-        for block in response.content:
-            if hasattr(block, "text"):
-                protocol_text += block.text
+        protocol_text = _collect_text(response.content)
 
-        # Extract title
+        # Extract title from first heading
         title_match = re.search(r"^#\s+(.+?)(?:\s*—|\n)", protocol_text, re.MULTILINE)
-        protocol_title = title_match.group(1).strip() if title_match else f"{target_protein} Purification Protocol"
+        protocol_title = (
+            title_match.group(1).strip()
+            if title_match
+            else f"{target_protein} Purification Protocol"
+        )
 
         # Extract safety warnings
-        warnings = []
+        warnings: list[str] = []
         safety_section = re.search(
             r"##\s+\d+\.\s+Safety Precautions\n(.*?)(?=\n##|\Z)", protocol_text, re.DOTALL
         )
         if safety_section:
-            raw_warnings = safety_section.group(1).strip()
-            for line in raw_warnings.splitlines():
+            for line in safety_section.group(1).strip().splitlines():
                 line = line.strip().lstrip("-•*").strip()
                 if line:
                     warnings.append(line)
@@ -175,6 +204,8 @@ Be specific and practical. Lab scientists should be able to follow this protocol
             "warnings": warnings[:5],
         }
 
+    except ValueError:
+        raise  # Let validation errors propagate as 400
     except Exception as e:
         logger.error(f"Protocol generation failed: {e}", exc_info=True)
         return {

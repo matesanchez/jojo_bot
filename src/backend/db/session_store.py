@@ -2,7 +2,16 @@
 session_store.py — CRUD operations for sessions and messages.
 """
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
+
+
+def _iso(dt) -> str | None:
+    """Safely convert a datetime (or None) to ISO-8601 string."""
+    if dt is None:
+        return None
+    if isinstance(dt, datetime):
+        return dt.isoformat()
+    return str(dt)  # fallback for unexpected types
 
 from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -33,8 +42,8 @@ async def get_session(db: AsyncSession, session_id: str) -> dict | None:
         "id": session.id,
         "title": session.title,
         "instrument_context": session.instrument_context,
-        "created_at": session.created_at.isoformat() if session.created_at else None,
-        "last_active": session.last_active.isoformat() if session.last_active else None,
+        "created_at": _iso(session.created_at),
+        "last_active": _iso(session.last_active),
     }
 
 
@@ -49,8 +58,8 @@ async def list_sessions(db: AsyncSession, limit: int = 20) -> list[dict]:
             "id": s.id,
             "title": s.title or "Untitled Chat",
             "instrument_context": s.instrument_context,
-            "created_at": s.created_at.isoformat() if s.created_at else None,
-            "last_active": s.last_active.isoformat() if s.last_active else None,
+            "created_at": _iso(s.created_at),
+            "last_active": _iso(s.last_active),
         }
         for s in sessions
     ]
@@ -111,7 +120,7 @@ async def get_history(db: AsyncSession, session_id: str, max_turns: int = 6) -> 
             "role": m.role,
             "content": m.content,
             "citations": m.citations,
-            "created_at": m.created_at.isoformat() if m.created_at else None,
+            "created_at": _iso(m.created_at),
         }
         for m in messages
     ]
@@ -131,7 +140,7 @@ async def get_full_history(db: AsyncSession, session_id: str) -> list[dict]:
             "role": m.role,
             "content": m.content,
             "citations": m.citations,
-            "created_at": m.created_at.isoformat() if m.created_at else None,
+            "created_at": _iso(m.created_at),
         }
         for m in messages
     ]
@@ -139,9 +148,12 @@ async def get_full_history(db: AsyncSession, session_id: str) -> list[dict]:
 
 async def update_session_title(db: AsyncSession, session_id: str, first_message: str) -> None:
     """Auto-generate session title from the first user message."""
-    title = first_message[:50].strip()
-    if len(first_message) > 50:
-        title += "..."
+    stripped = first_message.strip()
+    if stripped:
+        title = stripped[:50] + ("..." if len(stripped) > 50 else "")
+    else:
+        # Fallback to timestamp if message is blank
+        title = f"Chat {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')}"
     result = await db.execute(select(Session).where(Session.id == session_id))
     session = result.scalar_one_or_none()
     if session and not session.title:

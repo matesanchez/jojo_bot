@@ -10,7 +10,8 @@ import InputArea from "@/components/InputArea";
 import SessionSidebar from "@/components/SessionSidebar";
 import ProtocolDialog from "@/components/ProtocolDialog";
 
-const PROTOCOL_KEYWORDS = ["generate protocol", "write a protocol", "purification protocol", "create a protocol", "generate a protocol for"];
+// Word-boundary regex prevents false positives like "protocolize" or "ungenerated protocol"
+const PROTOCOL_TRIGGER = /\b(generate|write|create|make)\s+(a\s+)?(purification\s+)?protocol\b/i;
 
 export default function HomePage() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -29,7 +30,7 @@ export default function HomePage() {
   useEffect(() => {
     getSessions()
       .then(setSessions)
-      .catch(() => {});
+      .catch((e) => console.error("Failed to load sessions:", e));
   }, []);
 
   // Show notice when instrument filter changes
@@ -47,8 +48,8 @@ export default function HomePage() {
 
   const handleSend = useCallback(
     async (text: string) => {
-      // Check for protocol keywords
-      if (PROTOCOL_KEYWORDS.some((kw) => text.toLowerCase().includes(kw))) {
+      // Check for protocol trigger (word-boundary regex)
+      if (PROTOCOL_TRIGGER.test(text)) {
         setProtocolOpen(true);
         return;
       }
@@ -84,9 +85,10 @@ export default function HomePage() {
         setFollowUps(res.follow_up_suggestions || []);
 
         // Refresh sessions list
-        getSessions().then(setSessions).catch(() => {});
+        getSessions().then(setSessions).catch((e) => console.error("Failed to refresh sessions:", e));
       } catch (e: unknown) {
         setConnectionError(true);
+        console.error("Chat request failed:", e instanceof Error ? e.message : e);
         const errorMsg: Message = {
           id: uuidv4(),
           role: "assistant",
@@ -122,7 +124,9 @@ export default function HomePage() {
       setMessages(msgs);
       setSessionId(id);
       setSidebarOpen(false);
-    } catch {}
+    } catch (e: unknown) {
+      console.error("Failed to load session:", e instanceof Error ? e.message : e);
+    }
   };
 
   const handleDeleteSession = async (id: string) => {
@@ -130,7 +134,9 @@ export default function HomePage() {
       await deleteSession(id);
       setSessions((prev) => prev.filter((s) => s.id !== id));
       if (sessionId === id) handleNewChat();
-    } catch {}
+    } catch (e: unknown) {
+      console.error("Failed to delete session:", e instanceof Error ? e.message : e);
+    }
   };
 
   return (

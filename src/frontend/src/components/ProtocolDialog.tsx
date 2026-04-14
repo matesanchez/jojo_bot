@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
 import { X, Copy, Download, Loader2, AlertTriangle } from "lucide-react";
 import { generateProtocol } from "@/lib/api";
 import { ProtocolResponse } from "@/lib/types";
@@ -40,6 +41,15 @@ export default function ProtocolDialog({ isOpen, onClose, sessionId }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
+  // Reset state every time the dialog opens so stale data doesn't show
+  useEffect(() => {
+    if (isOpen) {
+      setResult(null);
+      setError(null);
+      setCopied(false);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleGenerate = async () => {
@@ -75,13 +85,20 @@ export default function ProtocolDialog({ isOpen, onClose, sessionId }: Props) {
 
   const handleDownload = () => {
     if (!result) return;
-    const blob = new Blob([result.protocol_markdown], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${result.protocol_title.replace(/\s+/g, "_")}.md`;
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+      const blob = new Blob([result.protocol_markdown], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      // Sanitise filename — only keep alphanumerics, spaces, hyphens, underscores
+      const safeName = result.protocol_title.replace(/[^\w\s\-]/g, "").replace(/\s+/g, "_");
+      a.download = `${safeName || "protocol"}.md`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error("Download failed:", e);
+      setError("Could not download file. Try copying instead.");
+    }
   };
 
   const handleClose = () => {
@@ -205,7 +222,7 @@ export default function ProtocolDialog({ isOpen, onClose, sessionId }: Props) {
                 </div>
               )}
               <div className="prose prose-sm max-w-none">
-                <ReactMarkdown>{result.protocol_markdown}</ReactMarkdown>
+                <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{result.protocol_markdown}</ReactMarkdown>
               </div>
             </div>
           )}
@@ -230,8 +247,9 @@ export default function ProtocolDialog({ isOpen, onClose, sessionId }: Props) {
                 Download .md
               </button>
               <button
-                onClick={() => setResult(null)}
-                className="text-sm text-gray-500 hover:text-gray-700 px-2"
+                onClick={() => { setResult(null); setError(null); }}
+                disabled={isGenerating}
+                className="text-sm text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed px-2"
               >
                 Regenerate
               </button>

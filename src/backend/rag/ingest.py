@@ -60,7 +60,7 @@ INSTRUMENT_KEYWORDS: dict[str, list[str]] = {
     "basic": ["äkta basic", "akta basic"],
     "prime": ["äktaprime", "aktaprime", "äkta prime"],
     "process": ["äktaprocess", "aktaprocess"],
-    "fplc": ["ktafplc", "akta fplc", "fplc"],
+    "fplc": ["aktafplc", "akta fplc", "fplc"],
     "explorer": ["äktaexplorer", "aktaexplorer"],
     "purifier": ["äktapurifier", "aktapurifier"],
     "unicorn": ["unicorn"],
@@ -227,12 +227,16 @@ def ingest(input_dir: str, reset: bool = False) -> None:
                 )
 
             pages = max(c["page_number"] for c in chunks)
+            # Summarise all detected instruments for this document
+            instruments = sorted({c["instrument"] for c in chunks})
             print(f"  → {pages} pages, {len(chunks)} chunks created")
-            print(f"  → Instrument: {chunks[0]['instrument']}")
+            print(f"  → Instruments detected: {', '.join(instruments)}")
             total_chunks += len(chunks)
 
         except Exception as e:
-            print(f"  → ERROR processing {pdf_path.name}: {e} — skipping")
+            import traceback
+            print(f"  → ERROR processing {pdf_path.name}: {type(e).__name__}: {e} — skipping")
+            traceback.print_exc()
 
     print(f"\n✅ Ingestion complete. {len(pdf_files)} documents, ~{total_chunks} chunks indexed.")
 

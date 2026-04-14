@@ -2,13 +2,21 @@ import { ChatResponse, Message, ProtocolRequest, ProtocolResponse, Session } fro
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
+const SAFE_ERROR_PATTERN = /^[\w\s.,!?:()\-']{0,200}$/;
+
 async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
-    let message = `HTTP ${res.status}`;
+    let message = `Request failed (HTTP ${res.status})`;
     try {
       const body = await res.json();
-      message = body.detail || message;
-    } catch {}
+      const detail = typeof body?.detail === "string" ? body.detail : "";
+      // Only expose server error text if it looks safe (no HTML, scripts, etc.)
+      if (detail && SAFE_ERROR_PATTERN.test(detail)) {
+        message = detail;
+      }
+    } catch {
+      // Ignore JSON parse failures
+    }
     throw new Error(message);
   }
   return res.json() as Promise<T>;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Send } from "lucide-react";
 
 interface Props {
@@ -11,7 +11,6 @@ interface Props {
 
 export default function InputArea({ onSend, isLoading, followUpSuggestions }: Props) {
   const [input, setInput] = useState("");
-  const sendTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleSend = () => {
     const text = input.trim();

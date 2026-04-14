@@ -27,14 +27,14 @@ from db.session_store import (
 from rag.generator import generate, should_search_web, suggest_followups
 from rag.retriever import retrieve
 
-logging.basicConfig(level=settings.log_level.upper())
+logging.basicConfig(level=settings.log_level)
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# Rate limiting (in-memory, per session_id)
+# Rate limiting (in-memory per session_id — for production use Redis)
 # ---------------------------------------------------------------------------
 _rate_limit: dict[str, list[float]] = defaultdict(list)
-RATE_LIMIT_MAX = 30  # requests
+RATE_LIMIT_MAX = 30    # requests
 RATE_LIMIT_WINDOW = 60  # seconds
 
 
@@ -52,8 +52,22 @@ def check_rate_limit(session_id: str) -> None:
 # ---------------------------------------------------------------------------
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Initialise database tables
     await init_db()
-    logger.info("Jojo Bot backend started. Database initialized.")
+    logger.info("Jojo Bot backend started. Database initialised.")
+
+    # Warm-up: verify ChromaDB collection is accessible (fail fast on bad config)
+    try:
+        from pathlib import Path
+        chroma_path = Path(settings.chroma_db_path).resolve()
+        client = chromadb.PersistentClient(path=str(chroma_path))
+        client.get_collection("akta_manuals")
+        logger.info("ChromaDB collection 'akta_manuals' is ready.")
+    except Exception:
+        logger.warning(
+            "ChromaDB collection 'akta_manuals' not found. "
+            "Run: python -m rag.ingest --input ../../data/manuals/"
+        )
     yield
 
 
@@ -63,13 +77,13 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Accept"],
 )
 
 
 # ---------------------------------------------------------------------------
-# Request/Response schemas
+# Request / Response schemas
 # ---------------------------------------------------------------------------
 class ChatRequest(BaseModel):
     message: str
@@ -127,12 +141,18 @@ async def chat(req: ChatRequest, db: AsyncSession = Depends(get_db)):
 
         # Retrieve relevant chunks
         try:
-            chunks = retrieve(query=req.message, instrument_filter=req.instrument_filter, k=6)
-        except RuntimeError as e:
+            chunks = retrieve(
+                query=req.message,
+                instrument_filter=req.instrument_filter or None,
+                k=6,
+            )
+        except RuntimeError:
             raise HTTPException(
                 status_code=503,
-                detail="Knowledge base not initialized. Run the ingestion script first.",
+                detail="Knowledge base not initialised. Run the ingestion script first.",
             )
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=str(e))
 
         # Get conversation history
         history = await get_history(db, session_id, max_turns=6)
@@ -146,17 +166,18 @@ async def chat(req: ChatRequest, db: AsyncSession = Depends(get_db)):
             use_web_search=use_web,
         )
 
-        # Follow-up suggestions
+        # Safe instrument detection — guard against empty chunks
         instrument_detected = chunks[0]["instrument"] if chunks else None
+
+        # Follow-up suggestions
         followups = await suggest_followups(req.message, result["response"], instrument_detected)
 
-        # Persist messages
+        # Persist both messages atomically — if second fails, first is rolled back
         await add_message(db, session_id, "user", req.message)
         await add_message(db, session_id, "assistant", result["response"], result["citations"])
 
         # Auto-title from first message
-        history_count = len(history)
-        if history_count == 0:
+        if not history:
             await update_session_title(db, session_id, req.message)
 
         return ChatResponse(
@@ -202,18 +223,15 @@ async def remove_session(session_id: str, db: AsyncSession = Depends(get_db)):
 
 @app.get("/api/health")
 async def health():
+    doc_count = 0
     try:
         from pathlib import Path
         chroma_path = Path(settings.chroma_db_path).resolve()
         client = chromadb.PersistentClient(path=str(chroma_path))
-        try:
-            collection = client.get_collection("akta_manuals")
-            doc_count = collection.count()
-        except Exception:
-            doc_count = 0
+        collection = client.get_collection("akta_manuals")
+        doc_count = collection.count()
     except Exception:
-        doc_count = 0
-
+        pass
     return {"status": "ok", "version": "1.0.0", "documents_indexed": doc_count}
 
 
@@ -251,6 +269,8 @@ async def generate_protocol_endpoint(req: ProtocolRequest, db: AsyncSession = De
 
     except HTTPException:
         raise
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Error generating protocol: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Could not generate protocol.")
@@ -259,4 +279,10 @@ async def generate_protocol_endpoint(req: ProtocolRequest, db: AsyncSession = De
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    # Only enable hot-reload in development
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=not settings.is_production,
+    )
