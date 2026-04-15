@@ -9,13 +9,26 @@ API key priority order:
 from __future__ import annotations
 
 import os
+import sys
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic import SecretStr, field_validator
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
-load_dotenv()
+# In a PyInstaller frozen exe, CWD may not be the exe's directory.
+# Explicitly load .env from next to the executable (or this script in dev).
+if getattr(sys, "frozen", False):
+    _app_dir = Path(sys.executable).parent
+else:
+    _app_dir = Path(__file__).parent
+
+load_dotenv(_app_dir / ".env")
+
+# Also ensure CWD is the app directory so relative paths in settings resolve
+# correctly (e.g. chroma_db_path = ../data/chroma_db).
+os.chdir(_app_dir)
 
 VALID_LOG_LEVELS = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
 

@@ -161,6 +161,9 @@ def get_documents() -> list[dict]:
     Auto-bootstraps from ChromaDB on first call if the manifest is missing.
     """
     path = _manifest_path()
+    logger.info("Manifest path: %s (exists=%s)", path, path.exists())
     if not path.exists():
         bootstrap_from_chromadb()
-    return load_manifest().get("documents", [])
+    docs = load_manifest().get("documents", [])
+    logger.info("Loaded %d documents from manifest", len(docs))
+    return docs
