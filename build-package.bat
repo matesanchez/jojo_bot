@@ -112,15 +112,18 @@ pause
 exit /b 1
 :venv_ok
 
-call venv\Scripts\activate.bat
+REM Use venv Python/pip directly - never activate/deactivate.
+REM deactivate.bat calls endlocal which destroys our setlocal variables.
+set "VENV_PYTHON=%BACKEND_DIR%\venv\Scripts\python.exe"
+set "VENV_PIP=%BACKEND_DIR%\venv\Scripts\pip.exe"
+set "VENV_PYINSTALLER=%BACKEND_DIR%\venv\Scripts\pyinstaller.exe"
 
-python -c "import PyInstaller" >nul 2>&1
+"%VENV_PYTHON%" -c "import PyInstaller" >nul 2>&1
 if not errorlevel 1 goto pyinstaller_ok
 echo  Installing PyInstaller...
-pip install pyinstaller --trusted-host pypi.org --trusted-host files.pythonhosted.org
+"%VENV_PIP%" install pyinstaller --trusted-host pypi.org --trusted-host files.pythonhosted.org
 if not errorlevel 1 goto pyinstaller_ok
 echo  [ERROR] Could not install PyInstaller.
-deactivate
 pause
 exit /b 1
 :pyinstaller_ok
@@ -129,17 +132,15 @@ echo  PyInstaller workpath: %PI_BACKEND_WORK%
 echo  PyInstaller distpath: %PI_BACKEND_DIST%
 if exist "%PI_BACKEND_WORK%" rmdir /s /q "%PI_BACKEND_WORK%" 2>nul
 if exist "%PI_BACKEND_DIST%" rmdir /s /q "%PI_BACKEND_DIST%" 2>nul
-pyinstaller backend.spec --noconfirm --workpath "%PI_BACKEND_WORK%" --distpath "%PI_BACKEND_DIST%"
+"%VENV_PYINSTALLER%" backend.spec --noconfirm --workpath "%PI_BACKEND_WORK%" --distpath "%PI_BACKEND_DIST%"
 if not errorlevel 1 goto backend_built
 echo  [ERROR] Backend PyInstaller build failed. See output above.
-deactivate
 pause
 exit /b 1
 :backend_built
 
 if exist "%PI_BACKEND_DIST%\backend\backend.exe" goto backend_verified
 echo  [ERROR] backend.exe was not produced. PyInstaller may have failed silently.
-deactivate
 pause
 exit /b 1
 :backend_verified
@@ -154,10 +155,10 @@ REM ===================================================================
 echo  [2/6] Building launcher Jojo Bot.exe (native window + avatar icon)...
 echo.
 
-python -c "import webview" >nul 2>&1
+"%VENV_PYTHON%" -c "import webview" >nul 2>&1
 if not errorlevel 1 goto webview_ok
 echo  Installing pywebview...
-pip install pywebview --trusted-host pypi.org --trusted-host files.pythonhosted.org
+"%VENV_PIP%" install pywebview --trusted-host pypi.org --trusted-host files.pythonhosted.org
 if not errorlevel 1 goto webview_ok
 echo  [WARNING] pywebview install failed. Launcher will fall back to default browser.
 :webview_ok
@@ -169,15 +170,12 @@ echo  PyInstaller workpath: %PI_LAUNCHER_WORK%
 echo  PyInstaller distpath: %PI_LAUNCHER_DIST%
 if exist "%PI_LAUNCHER_WORK%" rmdir /s /q "%PI_LAUNCHER_WORK%" 2>nul
 if exist "%PI_LAUNCHER_DIST%" rmdir /s /q "%PI_LAUNCHER_DIST%" 2>nul
-pyinstaller launcher.spec --noconfirm --workpath "%PI_LAUNCHER_WORK%" --distpath "%PI_LAUNCHER_DIST%"
+"%VENV_PYINSTALLER%" launcher.spec --noconfirm --workpath "%PI_LAUNCHER_WORK%" --distpath "%PI_LAUNCHER_DIST%"
 if not errorlevel 1 goto launcher_built
 echo  [ERROR] Launcher PyInstaller build failed. See output above.
-deactivate
 pause
 exit /b 1
 :launcher_built
-
-deactivate
 
 if exist "%PI_LAUNCHER_DIST%\Jojo Bot.exe" goto launcher_verified
 echo  [WARNING] Jojo Bot.exe was not produced. Will use .bat fallback.
