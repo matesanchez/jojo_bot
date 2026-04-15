@@ -1,25 +1,57 @@
-# Environment variables (API KEYS LIVE HERE — NEVER COMMIT)
+# ── Secrets / API keys — NEVER commit ────────────────────────────────────────
 .env
 .env.local
 .env.production
 .env*.local
+src/backend/.env
+# Allow the example file
+!.env.example
+!src/backend/.env.example
 
-# Python
+# ── Large binary data — keep local, distribute via build-package.bat ─────────
+# PDF manuals (222 MB — too large for Git)
+data/manuals/
+# ChromaDB vector index (regenerated from PDFs at build time)
+data/chroma_db/
+**/chroma_db/
+chroma_db/
+# SQLite databases (contain user chat history)
+*.db
+*.db-shm
+*.db-wal
+# User-uploaded documents
+data/user_documents/
+
+# ── Build artefacts — regenerated, never commit ───────────────────────────────
+dist/
+build/
+*.spec.bak
+# PyInstaller
+src/backend/dist/
+src/backend/build/
+dist_scripts/dist/
+dist_scripts/build/
+# Next.js
+.next/
+src/frontend/.next/
+# npm
+node_modules/
+src/frontend/node_modules/
+
+# ── Python ────────────────────────────────────────────────────────────────────
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.egg-info/
 venv/
 .venv/
+src/backend/venv/
 
-# Node
-node_modules/
-.next/
-
-# Vector database (large, regenerated from PDFs)
-chroma_db/
-
-# OS files
+# ── OS / editor files ─────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
-
-# PDF manuals (too large for Git — keep local)
-data/manuals/*.pdf
+*.swp
+*.swo
+.idea/
+.vscode/

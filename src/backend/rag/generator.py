@@ -9,7 +9,7 @@ from pathlib import Path
 import anthropic
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from config import settings
+from config import settings, get_api_key
 
 logger = logging.getLogger(__name__)
 
@@ -21,12 +21,23 @@ _system_prompt: str | None = None
 
 
 def _get_client() -> anthropic.AsyncAnthropic:
+    """Return (or lazily create) the Anthropic client using the current API key."""
     global _client
     if _client is None:
-        _client = anthropic.AsyncAnthropic(
-            api_key=settings.anthropic_api_key.get_secret_value()
-        )
+        key = get_api_key()
+        if not key:
+            raise anthropic.AuthenticationError(
+                response=None,  # type: ignore[arg-type]
+                body={"error": {"message": "No API key configured. Please add your Anthropic API key in the Settings panel (⚙ icon)."}},
+            )
+        _client = anthropic.AsyncAnthropic(api_key=key)
     return _client
+
+
+def reset_client() -> None:
+    """Force recreation of the Anthropic client — called after the API key is updated."""
+    global _client
+    _client = None
 
 
 def load_system_prompt() -> str:
@@ -77,7 +88,11 @@ def build_messages(query: str, history: list[dict]) -> list[dict]:
     """Construct the Claude API messages array."""
     messages = []
     for msg in history[-12:]:
-        messages.append({"role": msg["role"], "content": msg["content"]})
+        # Guard against malformed history entries from the DB
+        role = msg.get("role")
+        content = msg.get("content")
+        if role in ("user", "assistant") and content is not None:
+            messages.append({"role": role, "content": content})
     messages.append({"role": "user", "content": query})
     return messages
 
@@ -174,9 +189,9 @@ async def generate(
             # fall through to second attempt; if this was attempt 1, loop exits
 
         except anthropic.AuthenticationError:
-            logger.error("Claude API authentication failed — check ANTHROPIC_API_KEY")
+            logger.error("Claude API authentication failed — check ANTHROPIC_API_KEY or Settings panel")
             return {
-                "response": "AI service configuration error — please check server settings.",
+                "response": "⚙️ **No API key configured.** Click the settings icon (⚙) in the top-right corner and enter your Anthropic API key to start chatting.",
                 "citations": [],
             }
 

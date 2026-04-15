@@ -241,6 +241,97 @@ def ingest(input_dir: str, reset: bool = False) -> None:
     print(f"\n✅ Ingestion complete. {len(pdf_files)} documents, ~{total_chunks} chunks indexed.")
 
 
+def ingest_files(
+    file_paths: list[Path],
+    instrument_override: str = "auto",
+    progress_callback=None,
+) -> dict:
+    """
+    Incrementally ingest a list of PDF files into an existing ChromaDB collection.
+
+    Uses deterministic chunk IDs (filename::chunk_index) so re-uploading the same
+    file is safe — existing chunks are replaced (upsert) rather than duplicated.
+
+    Args:
+        file_paths:          List of absolute Path objects pointing to PDFs.
+        instrument_override: If not "auto", force all chunks to this instrument tag.
+        progress_callback:   Optional callable(current, total, filename, chunks_added).
+
+    Returns:
+        {"files_processed": int, "chunks_added": int, "errors": list[str]}
+    """
+    chroma_path = Path(settings.chroma_db_path).resolve()
+    chroma_path.mkdir(parents=True, exist_ok=True)
+    client = chromadb.PersistentClient(path=str(chroma_path))
+    collection = client.get_or_create_collection(
+        name="akta_manuals",
+        metadata={"hnsw:space": "cosine"},
+    )
+
+    total = len(file_paths)
+    total_chunks = 0
+    errors: list[str] = []
+
+    for i, pdf_path in enumerate(file_paths, start=1):
+        filename = pdf_path.name
+        try:
+            chunks = extract_chunks_from_pdf(pdf_path)
+
+            # Apply instrument override (user picked from dropdown in UI)
+            if instrument_override and instrument_override != "auto":
+                for c in chunks:
+                    c["instrument"] = instrument_override
+
+            if not chunks:
+                msg = f"{filename}: No text extracted (possibly a scanned/image-only PDF)"
+                errors.append(msg)
+                if progress_callback:
+                    progress_callback(i, total, filename, 0)
+                continue
+
+            # Deterministic IDs → re-ingesting same file replaces old chunks cleanly
+            ids = [f"{filename}::{c['chunk_index']}" for c in chunks]
+            documents = [c["text"] for c in chunks]
+            metadatas = [
+                {
+                    "source_file": c["source_file"],
+                    "doc_title": c["doc_title"],
+                    "section_header": c["section_header"],
+                    "page_number": c["page_number"],
+                    "chunk_index": c["chunk_index"],
+                    "instrument": c["instrument"],
+                }
+                for c in chunks
+            ]
+
+            # Upsert in batches of 100
+            batch_size = 100
+            for b in range(0, len(chunks), batch_size):
+                collection.upsert(
+                    ids=ids[b: b + batch_size],
+                    documents=documents[b: b + batch_size],
+                    metadatas=metadatas[b: b + batch_size],
+                )
+
+            total_chunks += len(chunks)
+            if progress_callback:
+                progress_callback(i, total, filename, len(chunks))
+
+        except Exception as exc:
+            import traceback
+            msg = f"{filename}: {type(exc).__name__}: {exc}"
+            errors.append(msg)
+            traceback.print_exc()
+            if progress_callback:
+                progress_callback(i, total, filename, 0)
+
+    return {
+        "files_processed": total,
+        "chunks_added": total_chunks,
+        "errors": errors,
+    }
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Ingest ÄKTA manuals into ChromaDB")
     parser.add_argument("--input", required=True, help="Directory containing PDF manuals")

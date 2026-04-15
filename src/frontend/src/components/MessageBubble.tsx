@@ -4,6 +4,7 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import { Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
+import Image from "next/image";
 import { Message } from "@/lib/types";
 import CitationCard from "./CitationCard";
 
@@ -45,7 +46,7 @@ export default function MessageBubble({ message }: Props) {
     return (
       <div className="flex justify-end px-4 py-2">
         <div className="max-w-[75%]">
-          <div className="bg-blue-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm">
+          <div className="bg-nurix-red text-white rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm">
             <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</p>
           </div>
           <p className="text-right text-xs text-gray-400 mt-1 pr-1">
@@ -58,9 +59,15 @@ export default function MessageBubble({ message }: Props) {
 
   return (
     <div className="flex items-start gap-3 px-4 py-2 group">
-      {/* Avatar */}
-      <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 mt-1">
-        J
+      {/* Jojo Bot avatar */}
+      <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-nurix-gold ring-offset-1 ring-offset-gray-50 flex-shrink-0 mt-1">
+        <Image
+          src="/jojo-avatar.png"
+          alt="Jojo Bot"
+          width={32}
+          height={32}
+          className="w-full h-full object-cover"
+        />
       </div>
 
       <div className="flex-1 max-w-[80%]">
@@ -71,7 +78,7 @@ export default function MessageBubble({ message }: Props) {
             className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded text-gray-400 hover:text-gray-600 hover:bg-gray-100"
             title="Copy"
           >
-            {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
+            {copied ? <Check size={14} className="text-nurix-gold" /> : <Copy size={14} />}
           </button>
 
           {/* Markdown content */}
@@ -85,7 +92,7 @@ export default function MessageBubble({ message }: Props) {
           <div className="mt-2">
             <button
               onClick={() => setCitationsOpen(!citationsOpen)}
-              className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors"
+              className="flex items-center gap-1 text-xs text-gray-500 hover:text-nurix-navy transition-colors"
             >
               {citationsOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
               {message.citations.length} source{message.citations.length !== 1 ? "s" : ""}

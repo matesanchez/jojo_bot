@@ -2,13 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { deleteSession, getSession, getSessions, sendMessage } from "@/lib/api";
+import { deleteSession, getApiKeyStatus, getSession, getSessions, sendMessage } from "@/lib/api";
 import { Message, Session } from "@/lib/types";
 import Header from "@/components/Header";
 import ChatWindow from "@/components/ChatWindow";
 import InputArea from "@/components/InputArea";
 import SessionSidebar from "@/components/SessionSidebar";
 import ProtocolDialog from "@/components/ProtocolDialog";
+import SettingsPanel from "@/components/SettingsPanel";
 
 // Word-boundary regex prevents false positives like "protocolize" or "ungenerated protocol"
 const PROTOCOL_TRIGGER = /\b(generate|write|create|make)\s+(a\s+)?(purification\s+)?protocol\b/i;
@@ -22,15 +23,21 @@ export default function HomePage() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [protocolOpen, setProtocolOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [connectionError, setConnectionError] = useState(false);
   const [instrumentNotice, setInstrumentNotice] = useState("");
+  const [apiKeyConfigured, setApiKeyConfigured] = useState(true); // optimistic
   const prevInstrument = useRef(instrumentFilter);
 
-  // Load sessions on mount
+  // Load sessions and check API key status on mount
   useEffect(() => {
     getSessions()
       .then(setSessions)
       .catch((e) => console.error("Failed to load sessions:", e));
+
+    getApiKeyStatus()
+      .then((status) => setApiKeyConfigured(status.configured))
+      .catch(() => setApiKeyConfigured(false));
   }, []);
 
   // Show notice when instrument filter changes
@@ -119,7 +126,7 @@ export default function HomePage() {
         role: m.role,
         content: m.content,
         citations: m.citations,
-        timestamp: m.created_at || new Date().toISOString(),
+        timestamp: m.timestamp || (m as any).created_at || new Date().toISOString(),
       }));
       setMessages(msgs);
       setSessionId(id);
@@ -137,6 +144,10 @@ export default function HomePage() {
     } catch (e: unknown) {
       console.error("Failed to delete session:", e instanceof Error ? e.message : e);
     }
+  };
+
+  const handleApiKeyChange = (configured: boolean) => {
+    setApiKeyConfigured(configured);
   };
 
   return (
@@ -159,6 +170,8 @@ export default function HomePage() {
           onInstrumentChange={setInstrumentFilter}
           onNewChat={handleNewChat}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+          onOpenSettings={() => setSettingsOpen(true)}
+          apiKeyConfigured={apiKeyConfigured}
         />
 
         {/* Connection error banner */}
@@ -178,7 +191,9 @@ export default function HomePage() {
         <ChatWindow
           messages={messages}
           isLoading={isLoading}
+          apiKeyConfigured={apiKeyConfigured}
           onQuickAction={handleSend}
+          onOpenSettings={() => setSettingsOpen(true)}
         />
 
         <InputArea
@@ -193,6 +208,13 @@ export default function HomePage() {
         isOpen={protocolOpen}
         onClose={() => setProtocolOpen(false)}
         sessionId={sessionId}
+      />
+
+      {/* Settings panel */}
+      <SettingsPanel
+        isOpen={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        onApiKeyChange={handleApiKeyChange}
       />
     </div>
   );

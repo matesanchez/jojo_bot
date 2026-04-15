@@ -1,6 +1,13 @@
 """
 config.py — Load and validate all environment variables for Jojo Bot.
+
+API key priority order:
+  1. %APPDATA%/JojoBot/config.json   (set via the in-app Settings panel)
+  2. ANTHROPIC_API_KEY env var / .env file
+  3. None — backend starts fine, returns a helpful error on first chat
 """
+from __future__ import annotations
+
 import os
 from functools import lru_cache
 
@@ -19,14 +26,17 @@ VALID_INSTRUMENTS = {
 
 
 class Settings(BaseSettings):
-    # Claude API
-    anthropic_api_key: SecretStr
+    # Claude API — optional at startup; can be supplied later via Settings panel
+    anthropic_api_key: SecretStr | None = None
 
     # ChromaDB
     chroma_db_path: str = "./chroma_db"
 
-    # Manuals directory
+    # Manuals directory (base knowledge base)
     manuals_dir: str = "./data/manuals"
+
+    # User-uploaded documents directory
+    user_documents_dir: str = "./data/user_documents"
 
     # SQLite database
     database_url: str = "sqlite+aiosqlite:///./jojobot.db"
@@ -68,3 +78,27 @@ def get_settings() -> Settings:
 
 
 settings = get_settings()
+
+
+def get_api_key() -> str | None:
+    """
+    Return the active Anthropic API key, checking AppData first then .env.
+
+    This is intentionally NOT cached — the user can update the key at runtime
+    via the Settings panel without restarting the server.
+    """
+    # 1. Check user's local AppData config (set via Settings panel)
+    try:
+        from appdata import load_api_key
+        key = load_api_key()
+        if key:
+            return key
+    except Exception:
+        pass
+
+    # 2. Fall back to .env / environment variable
+    s = get_settings()
+    if s.anthropic_api_key:
+        return s.anthropic_api_key.get_secret_value()
+
+    return None

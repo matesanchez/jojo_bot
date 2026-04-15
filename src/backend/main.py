@@ -1,18 +1,30 @@
 """
 main.py — FastAPI application for Jojo Bot.
 """
+from __future__ import annotations
+
+import asyncio
+import json
 import logging
+import queue as thread_queue
+import shutil
+import tempfile
+import threading
 import time
 from collections import defaultdict
 from contextlib import asynccontextmanager
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import List
 
 import chromadb
-from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from config import settings
+from config import get_api_key, settings
 from db.database import get_db, init_db
 from db.session_store import (
     add_message,
@@ -24,7 +36,7 @@ from db.session_store import (
     list_sessions,
     update_session_title,
 )
-from rag.generator import generate, should_search_web, suggest_followups
+from rag.generator import generate, reset_client, should_search_web, suggest_followups
 from rag.retriever import retrieve
 
 logging.basicConfig(level=settings.log_level)
@@ -34,17 +46,32 @@ logger = logging.getLogger(__name__)
 # Rate limiting (in-memory per session_id — for production use Redis)
 # ---------------------------------------------------------------------------
 _rate_limit: dict[str, list[float]] = defaultdict(list)
-RATE_LIMIT_MAX = 30    # requests
-RATE_LIMIT_WINDOW = 60  # seconds
+
+
+def _check_rate(key: str, max_requests: int, window_seconds: int) -> None:
+    now = time.time()
+    window_start = now - window_seconds
+    _rate_limit[key] = [t for t in _rate_limit[key] if t > window_start]
+    if len(_rate_limit[key]) >= max_requests:
+        raise HTTPException(status_code=429, detail="Too many requests. Please slow down.")
+    _rate_limit[key].append(now)
 
 
 def check_rate_limit(session_id: str) -> None:
-    now = time.time()
-    window_start = now - RATE_LIMIT_WINDOW
-    _rate_limit[session_id] = [t for t in _rate_limit[session_id] if t > window_start]
-    if len(_rate_limit[session_id]) >= RATE_LIMIT_MAX:
-        raise HTTPException(status_code=429, detail="Too many requests. Please slow down.")
-    _rate_limit[session_id].append(now)
+    """Chat endpoint: 30 requests / 60 s per session."""
+    _check_rate(f"chat:{session_id}", max_requests=30, window_seconds=60)
+
+
+def check_settings_rate_limit(request: Request) -> None:
+    """Settings/upload endpoints: 10 requests / 60 s per IP."""
+    client_ip = request.client.host if request.client else "unknown"
+    _check_rate(f"settings:{client_ip}", max_requests=10, window_seconds=60)
+
+
+def check_upload_rate_limit(request: Request) -> None:
+    """Upload endpoint: 5 requests / 60 s per IP (ingest is expensive)."""
+    client_ip = request.client.host if request.client else "unknown"
+    _check_rate(f"upload:{client_ip}", max_requests=5, window_seconds=60)
 
 
 # ---------------------------------------------------------------------------
@@ -52,13 +79,15 @@ def check_rate_limit(session_id: str) -> None:
 # ---------------------------------------------------------------------------
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Initialise database tables
     await init_db()
     logger.info("Jojo Bot backend started. Database initialised.")
 
+    # Ensure user_documents folder exists
+    user_docs_path = Path(settings.user_documents_dir).resolve()
+    user_docs_path.mkdir(parents=True, exist_ok=True)
+
     # Warm-up: verify ChromaDB collection is accessible (fail fast on bad config)
     try:
-        from pathlib import Path
         chroma_path = Path(settings.chroma_db_path).resolve()
         client = chromadb.PersistentClient(path=str(chroma_path))
         client.get_collection("akta_manuals")
@@ -68,6 +97,16 @@ async def lifespan(app: FastAPI):
             "ChromaDB collection 'akta_manuals' not found. "
             "Run: python -m rag.ingest --input ../../data/manuals/"
         )
+
+    # Log API key status (never log the key itself)
+    if get_api_key():
+        logger.info("Anthropic API key is configured.")
+    else:
+        logger.warning(
+            "No Anthropic API key found. "
+            "Set it via the Settings panel (⚙) in the UI, or add ANTHROPIC_API_KEY to .env"
+        )
+
     yield
 
 
@@ -116,19 +155,21 @@ class ProtocolResponse(BaseModel):
     session_id: str
 
 
+class ApiKeyRequest(BaseModel):
+    api_key: str
+
+
 # ---------------------------------------------------------------------------
-# Endpoints
+# Chat endpoints
 # ---------------------------------------------------------------------------
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest, db: AsyncSession = Depends(get_db)):
-    # Input validation
     if not req.message or not req.message.strip():
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
     if len(req.message) > 10_000:
         raise HTTPException(status_code=400, detail="Message too long (max 10,000 characters).")
 
     try:
-        # Create or validate session
         if req.session_id:
             session = await get_session(db, req.session_id)
             if session is None:
@@ -139,7 +180,6 @@ async def chat(req: ChatRequest, db: AsyncSession = Depends(get_db)):
 
         check_rate_limit(session_id)
 
-        # Retrieve relevant chunks
         try:
             chunks = retrieve(
                 query=req.message,
@@ -154,10 +194,7 @@ async def chat(req: ChatRequest, db: AsyncSession = Depends(get_db)):
         except ValueError as e:
             raise HTTPException(status_code=400, detail=str(e))
 
-        # Get conversation history
         history = await get_history(db, session_id, max_turns=6)
-
-        # Generate response
         use_web = should_search_web(req.message, chunks)
         result = await generate(
             query=req.message,
@@ -166,17 +203,12 @@ async def chat(req: ChatRequest, db: AsyncSession = Depends(get_db)):
             use_web_search=use_web,
         )
 
-        # Safe instrument detection — guard against empty chunks
         instrument_detected = chunks[0]["instrument"] if chunks else None
-
-        # Follow-up suggestions
         followups = await suggest_followups(req.message, result["response"], instrument_detected)
 
-        # Persist both messages atomically — if second fails, first is rolled back
         await add_message(db, session_id, "user", req.message)
         await add_message(db, session_id, "assistant", result["response"], result["citations"])
 
-        # Auto-title from first message
         if not history:
             await update_session_title(db, session_id, req.message)
 
@@ -225,20 +257,23 @@ async def remove_session(session_id: str, db: AsyncSession = Depends(get_db)):
 async def health():
     doc_count = 0
     try:
-        from pathlib import Path
         chroma_path = Path(settings.chroma_db_path).resolve()
         client = chromadb.PersistentClient(path=str(chroma_path))
         collection = client.get_collection("akta_manuals")
         doc_count = collection.count()
     except Exception:
         pass
-    return {"status": "ok", "version": "1.0.0", "documents_indexed": doc_count}
+    return {
+        "status": "ok",
+        "version": "1.0.0",
+        "documents_indexed": doc_count,
+        "api_key_configured": get_api_key() is not None,
+    }
 
 
 @app.post("/api/generate-protocol", response_model=ProtocolResponse)
 async def generate_protocol_endpoint(req: ProtocolRequest, db: AsyncSession = Depends(get_db)):
     try:
-        # Create or validate session
         if req.session_id:
             session = await get_session(db, req.session_id)
             if session is None:
@@ -277,12 +312,299 @@ async def generate_protocol_endpoint(req: ProtocolRequest, db: AsyncSession = De
 
 
 # ---------------------------------------------------------------------------
+# Settings endpoints
+# ---------------------------------------------------------------------------
+
+@app.get("/api/settings/api-key")
+async def get_api_key_status(request: Request):
+    """Return whether an API key is configured and a masked preview."""
+    check_settings_rate_limit(request)
+    from appdata import get_masked_key
+    key = get_api_key()
+    return {
+        "configured": key is not None,
+        "masked_key": get_masked_key() if key else None,
+    }
+
+
+@app.post("/api/settings/api-key")
+async def set_api_key(req: ApiKeyRequest, request: Request):
+    """Save the API key to the user's local AppData config and reset the Anthropic client."""
+    check_settings_rate_limit(request)
+    key = req.api_key.strip()
+    if not key:
+        raise HTTPException(status_code=400, detail="API key cannot be empty.")
+    if not key.startswith("sk-ant-"):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid key format. Anthropic API keys start with 'sk-ant-'.",
+        )
+    try:
+        from appdata import save_api_key
+        save_api_key(key)
+        # Reset the cached Anthropic client so it picks up the new key
+        reset_client()
+        logger.info("API key updated via Settings panel")
+        return {"status": "saved"}
+    except Exception as e:
+        logger.error(f"Failed to save API key: {e}")
+        raise HTTPException(status_code=500, detail="Could not save API key.")
+
+
+@app.delete("/api/settings/api-key")
+async def delete_api_key_endpoint(request: Request):
+    """Remove the stored API key."""
+    check_settings_rate_limit(request)
+    from appdata import delete_api_key
+    delete_api_key()
+    reset_client()
+    return {"status": "deleted"}
+
+
+# ---------------------------------------------------------------------------
+# Knowledge base endpoints
+# ---------------------------------------------------------------------------
+
+@app.get("/api/knowledge-base")
+async def get_knowledge_base():
+    """Return the list of all ingested documents."""
+    try:
+        from rag.kb_manifest import get_documents
+        docs = get_documents()
+        return {"documents": docs, "total": len(docs)}
+    except Exception as e:
+        logger.error(f"Error fetching knowledge base: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Could not load knowledge base.")
+
+
+@app.post("/api/knowledge-base/upload")
+async def upload_documents(
+    request: Request,
+    files: List[UploadFile] = File(...),
+    instrument: str = Form("general"),
+):
+    """
+    Accept PDF uploads, save them to user_documents/, and ingest them into ChromaDB.
+    Returns a Server-Sent Events stream so the UI can show live progress.
+    """
+    check_upload_rate_limit(request)
+
+    # Validate instrument tag
+    from config import VALID_INSTRUMENTS
+    if instrument not in VALID_INSTRUMENTS and instrument != "auto":
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid instrument '{instrument}'. Must be one of: {sorted(VALID_INSTRUMENTS)}",
+        )
+
+    # Validate that all uploads are PDFs (basic check)
+    MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 MB per file
+    MAX_FILES = 20
+
+    if len(files) > MAX_FILES:
+        raise HTTPException(status_code=400, detail=f"Too many files. Maximum {MAX_FILES} per upload.")
+
+    for f in files:
+        if not f.filename or not f.filename.lower().endswith(".pdf"):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Only PDF files are accepted. Got: {f.filename}",
+            )
+
+    def _safe_filename(raw: str) -> str:
+        """
+        Strip all path components and dangerous characters from an uploaded filename.
+        Only keeps alphanumerics, hyphens, underscores, dots, and spaces.
+        Ensures the result ends with .pdf and is non-empty.
+        """
+        import re
+        # Strip any path prefix (handles both / and \ separators)
+        name = Path(raw).name
+        # Remove any remaining path traversal characters
+        name = re.sub(r"[^\w\s\-.]", "_", name)
+        # Collapse multiple underscores/spaces
+        name = re.sub(r"[_\s]{2,}", "_", name).strip("_. ")
+        # Ensure it ends with .pdf (case-insensitive)
+        if not name.lower().endswith(".pdf"):
+            name += ".pdf"
+        return name or "upload.pdf"
+
+    # Save uploaded files to a temp directory first
+    user_docs_path = Path(settings.user_documents_dir).resolve()
+    user_docs_path.mkdir(parents=True, exist_ok=True)
+
+    saved_paths: list[Path] = []
+    file_sizes: list[int] = []
+    for upload in files:
+        safe_name = _safe_filename(upload.filename or "upload.pdf")
+        dest = (user_docs_path / safe_name).resolve()
+
+        # Path containment check — destination must be inside user_documents_dir
+        # Use relative_to() instead of startswith() to be correct on both Windows (\) and Unix (/)
+        try:
+            dest.relative_to(user_docs_path)
+        except ValueError:
+            logger.warning(f"Blocked path traversal attempt in upload filename: {upload.filename!r}")
+            raise HTTPException(status_code=400, detail=f"Invalid filename: {upload.filename}")
+
+        content = await upload.read()
+        if len(content) > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=413,
+                detail=f"File '{safe_name}' is too large (max 50 MB).",
+            )
+        dest.write_bytes(content)
+        saved_paths.append(dest)
+        file_sizes.append(len(content))
+        logger.info(f"Saved uploaded file: {dest.name} ({len(content):,} bytes)")
+
+    # Run ingest in a background thread, stream progress via SSE
+    progress_q: thread_queue.Queue = thread_queue.Queue()
+
+    def _progress_cb(current: int, total: int, filename: str, chunks: int) -> None:
+        progress_q.put({
+            "type": "progress",
+            "current": current,
+            "total": total,
+            "filename": filename,
+            "chunks_added": chunks,
+        })
+
+    def _run_ingest() -> None:
+        from rag.ingest import ingest_files
+        from rag.kb_manifest import add_documents
+        from collections import defaultdict
+
+        result = ingest_files(saved_paths, instrument_override=instrument, progress_callback=_progress_cb)
+
+        # Update the KB manifest with newly added docs
+        now = datetime.now(timezone.utc).isoformat()
+        new_entries = []
+        for path in saved_paths:
+            # Quick re-scan to get page count (already read above, reuse from ChromaDB)
+            new_entries.append({
+                "source_file": path.name,
+                "doc_title": path.stem.replace("_", " "),
+                "instruments": [instrument] if instrument != "auto" else ["general"],
+                "chunk_count": 0,  # Will be updated from result below
+                "page_count": 0,
+                "category": "user",
+                "added_at": now,
+            })
+        # Patch chunk counts from result summary (approximate — best effort)
+        if result["chunks_added"] > 0 and new_entries:
+            per_file = result["chunks_added"] // len(new_entries)
+            for e in new_entries:
+                e["chunk_count"] = per_file
+        add_documents(new_entries)
+
+        progress_q.put({
+            "type": "done",
+            "chunks_added": result["chunks_added"],
+            "files_processed": result["files_processed"],
+            "errors": result["errors"],
+        })
+
+    ingest_thread = threading.Thread(target=_run_ingest, daemon=True)
+
+    async def _event_stream():
+        yield f"data: {json.dumps({'type': 'start', 'total': len(saved_paths)})}\n\n"
+
+        ingest_thread.start()
+        loop = asyncio.get_event_loop()
+
+        while True:
+            try:
+                # Poll the thread-safe queue (run in executor to avoid blocking event loop)
+                item = await loop.run_in_executor(
+                    None, lambda: progress_q.get(timeout=120)
+                )
+                yield f"data: {json.dumps(item)}\n\n"
+                if item["type"] in ("done", "error"):
+                    break
+            except thread_queue.Empty:
+                yield f"data: {json.dumps({'type': 'error', 'message': 'Ingest timed out'})}\n\n"
+                break
+            except Exception as exc:
+                yield f"data: {json.dumps({'type': 'error', 'message': str(exc)})}\n\n"
+                break
+
+    return StreamingResponse(
+        _event_stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",  # Disable nginx buffering if proxied
+        },
+    )
+
+
+@app.delete("/api/knowledge-base/{source_file:path}")
+async def delete_document(source_file: str):
+    """
+    Remove a user-uploaded document from ChromaDB and the manifest.
+    Base documents (from data/manuals/) cannot be deleted via the API.
+    """
+    from rag.kb_manifest import get_documents, remove_document as manifest_remove
+
+    # Reject any path traversal attempts immediately — source_file must be a bare filename
+    if "/" in source_file or "\\" in source_file or ".." in source_file:
+        raise HTTPException(status_code=400, detail="Invalid document name.")
+    # Strip to just the filename component as a final safety net
+    source_file = Path(source_file).name
+    if not source_file:
+        raise HTTPException(status_code=400, detail="Invalid document name.")
+
+    # Safety: only allow deletion of user-uploaded docs
+    docs = get_documents()
+    doc = next((d for d in docs if d["source_file"] == source_file), None)
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found.")
+    if doc.get("category") == "base":
+        raise HTTPException(
+            status_code=403,
+            detail="Base documents cannot be deleted via the API.",
+        )
+
+    # Remove from ChromaDB
+    try:
+        chroma_path = Path(settings.chroma_db_path).resolve()
+        client = chromadb.PersistentClient(path=str(chroma_path))
+        collection = client.get_collection("akta_manuals")
+        existing = collection.get(where={"source_file": {"$eq": source_file}}, include=[])
+        if existing["ids"]:
+            collection.delete(ids=existing["ids"])
+    except Exception as e:
+        logger.error(f"Error deleting from ChromaDB: {e}")
+
+    # Remove physical file — with path containment check
+    user_docs_path = Path(settings.user_documents_dir).resolve()
+    file_path = (user_docs_path / source_file).resolve()
+    # Path containment check — use relative_to() to be correct on Windows (\) and Unix (/)
+    try:
+        file_path.relative_to(user_docs_path)
+    except ValueError:
+        logger.warning(f"Blocked path traversal attempt in delete: {source_file!r}")
+        raise HTTPException(status_code=400, detail="Invalid document name.")
+    if file_path.exists():
+        file_path.unlink()
+
+    # Remove from manifest
+    manifest_remove(source_file)
+
+    return {"status": "deleted", "source_file": source_file}
+
+
+# ---------------------------------------------------------------------------
 if __name__ == "__main__":
     import uvicorn
-    # Only enable hot-reload in development
+    # In production (distributed package) bind only to localhost — the app is
+    # a local tool and should never be accessible from the network.
+    # In development, 0.0.0.0 allows testing from other devices if needed.
+    host = "127.0.0.1" if settings.is_production else "0.0.0.0"
     uvicorn.run(
         "main:app",
-        host="0.0.0.0",
+        host=host,
         port=8000,
         reload=not settings.is_production,
     )

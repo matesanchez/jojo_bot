@@ -1,0 +1,33 @@
+# Backend-level safety net — these are also in the root .gitignore
+# but listed here in case the backend folder is ever moved or shared separately.
+
+# Environment / secrets — NEVER commit
+.env
+.env.*
+!.env.example
+
+# Runtime artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.spec.bak
+
+# Virtual environment
+venv/
+.venv/
+
+# Databases (contain user chat history)
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+
+# PyInstaller output
+dist/
+build/

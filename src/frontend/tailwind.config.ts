@@ -7,7 +7,19 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        nurix: {
+          navy:    "#00164A",
+          navyDark:"#000e30",
+          navyLight:"#002080",
+          red:     "#F14468",
+          redHover:"#d93358",
+          gold:    "#FDB604",
+          goldHover:"#e5a400",
+        },
+      },
+    },
   },
   plugins: [],
 };

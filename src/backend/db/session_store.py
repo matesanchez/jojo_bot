@@ -24,8 +24,8 @@ async def create_session(db: AsyncSession, instrument_context: str | None = None
     session = Session(
         id=str(uuid.uuid4()),
         instrument_context=instrument_context,
-        created_at=datetime.utcnow(),
-        last_active=datetime.utcnow(),
+        created_at=datetime.now(timezone.utc),
+        last_active=datetime.now(timezone.utc),
     )
     db.add(session)
     await db.commit()
@@ -91,7 +91,7 @@ async def add_message(
         role=role,
         content=content,
         citations=citations,
-        created_at=datetime.utcnow(),
+        created_at=datetime.now(timezone.utc),
     )
     db.add(msg)
 
@@ -99,7 +99,7 @@ async def add_message(
     result = await db.execute(select(Session).where(Session.id == session_id))
     session = result.scalar_one_or_none()
     if session:
-        session.last_active = datetime.utcnow()
+        session.last_active = datetime.now(timezone.utc)
 
     await db.commit()
     return msg.id
