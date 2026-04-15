@@ -1,8 +1,17 @@
 @echo off
+REM --- If double-clicked, relaunch inside a persistent cmd window ---
+if "%JOJO_BUILD_INNER%"=="" (
+    set "JOJO_BUILD_INNER=1"
+    cmd /k "%~f0" %*
+    exit /b
+)
 setlocal
 title Jojo Bot - Build Package
 
+echo  Starting in: %~dp0
 cd /d "%~dp0"
+echo  Working dir:  %CD%
+echo.
 
 echo.
 echo  ============================================================
@@ -62,6 +71,12 @@ set "BACKEND_DIR=%ROOT%src\backend"
 set "FRONTEND_DIR=%ROOT%src\frontend"
 set "DIST_DIR=%ROOT%dist\JojoBot-v1.0"
 set "NODE_CACHE=%ROOT%dist\_node_cache"
+REM PyInstaller build/dist dirs go to %TEMP% to avoid OneDrive file-lock errors
+set "PI_WORK=%TEMP%\JojoBotBuild"
+set "PI_BACKEND_DIST=%PI_WORK%\backend_dist"
+set "PI_BACKEND_WORK=%PI_WORK%\backend_build"
+set "PI_LAUNCHER_DIST=%PI_WORK%\launcher_dist"
+set "PI_LAUNCHER_WORK=%PI_WORK%\launcher_build"
 
 echo  Paths:
 echo    ROOT         = %ROOT%
@@ -110,7 +125,11 @@ pause
 exit /b 1
 :pyinstaller_ok
 
-pyinstaller backend.spec --clean --noconfirm
+echo  PyInstaller workpath: %PI_BACKEND_WORK%
+echo  PyInstaller distpath: %PI_BACKEND_DIST%
+if exist "%PI_BACKEND_WORK%" rmdir /s /q "%PI_BACKEND_WORK%" 2>nul
+if exist "%PI_BACKEND_DIST%" rmdir /s /q "%PI_BACKEND_DIST%" 2>nul
+pyinstaller backend.spec --noconfirm --workpath "%PI_BACKEND_WORK%" --distpath "%PI_BACKEND_DIST%"
 if not errorlevel 1 goto backend_built
 echo  [ERROR] Backend PyInstaller build failed. See output above.
 deactivate
@@ -118,7 +137,7 @@ pause
 exit /b 1
 :backend_built
 
-if exist "dist\backend\backend.exe" goto backend_verified
+if exist "%PI_BACKEND_DIST%\backend\backend.exe" goto backend_verified
 echo  [ERROR] backend.exe was not produced. PyInstaller may have failed silently.
 deactivate
 pause
@@ -126,7 +145,7 @@ exit /b 1
 :backend_verified
 
 echo.
-echo  [1/6] Backend build complete. (dist\backend\backend.exe exists)
+echo  [1/6] Backend build complete. (%PI_BACKEND_DIST%\backend\backend.exe exists)
 echo.
 
 REM ===================================================================
@@ -146,7 +165,11 @@ echo  [WARNING] pywebview install failed. Launcher will fall back to default bro
 cd /d "%ROOT%dist_scripts"
 echo  Now in: %CD%
 
-pyinstaller launcher.spec --clean --noconfirm
+echo  PyInstaller workpath: %PI_LAUNCHER_WORK%
+echo  PyInstaller distpath: %PI_LAUNCHER_DIST%
+if exist "%PI_LAUNCHER_WORK%" rmdir /s /q "%PI_LAUNCHER_WORK%" 2>nul
+if exist "%PI_LAUNCHER_DIST%" rmdir /s /q "%PI_LAUNCHER_DIST%" 2>nul
+pyinstaller launcher.spec --noconfirm --workpath "%PI_LAUNCHER_WORK%" --distpath "%PI_LAUNCHER_DIST%"
 if not errorlevel 1 goto launcher_built
 echo  [ERROR] Launcher PyInstaller build failed. See output above.
 deactivate
@@ -156,11 +179,11 @@ exit /b 1
 
 deactivate
 
-if exist "dist\Jojo Bot.exe" goto launcher_verified
+if exist "%PI_LAUNCHER_DIST%\Jojo Bot.exe" goto launcher_verified
 echo  [WARNING] Jojo Bot.exe was not produced. Will use .bat fallback.
 goto skip_launcher_verify
 :launcher_verified
-echo  Launcher built: dist_scripts\dist\Jojo Bot.exe
+echo  Launcher built: %PI_LAUNCHER_DIST%\Jojo Bot.exe
 :skip_launcher_verify
 
 echo.
@@ -249,8 +272,8 @@ echo.
 
 REM -- Backend --
 echo  [5a] Copying backend...
-if not exist "%BACKEND_DIR%\dist\backend" echo  [ERROR] Source not found: %BACKEND_DIR%\dist\backend
-xcopy /e /i "%BACKEND_DIR%\dist\backend" "%DIST_DIR%\backend"
+if not exist "%PI_BACKEND_DIST%\backend" echo  [ERROR] Source not found: %PI_BACKEND_DIST%\backend
+xcopy /e /i "%PI_BACKEND_DIST%\backend" "%DIST_DIR%\backend"
 if not errorlevel 1 goto copy_backend_ok
 echo  [ERROR] Failed to copy backend. See error above.
 pause
@@ -317,7 +340,7 @@ echo.
 
 REM -- Launcher and scripts --
 echo  [5g] Copying launcher and scripts...
-if exist "%ROOT%dist_scripts\dist\Jojo Bot.exe" copy "%ROOT%dist_scripts\dist\Jojo Bot.exe" "%DIST_DIR%\"
+if exist "%PI_LAUNCHER_DIST%\Jojo Bot.exe" copy "%PI_LAUNCHER_DIST%\Jojo Bot.exe" "%DIST_DIR%\"
 if exist "%ROOT%dist_scripts\Start Jojo Bot.bat" copy "%ROOT%dist_scripts\Start Jojo Bot.bat" "%DIST_DIR%\"
 if exist "%ROOT%dist_scripts\Stop Jojo Bot.bat" copy "%ROOT%dist_scripts\Stop Jojo Bot.bat" "%DIST_DIR%\"
 if exist "%ROOT%dist_scripts\README.txt" copy "%ROOT%dist_scripts\README.txt" "%DIST_DIR%\"
