@@ -23,10 +23,10 @@ _MANIFEST_VERSION = 1
 
 
 def _manifest_path() -> Path:
-    """Resolve the manifest path relative to the chroma_db location."""
+    """Resolve the manifest path — sits next to the chroma_db folder."""
     from config import settings
     chroma = Path(settings.chroma_db_path).resolve()
-    return chroma.parent / "data" / "kb_manifest.json"
+    return chroma.parent / "kb_manifest.json"
 
 
 # ---------------------------------------------------------------------------

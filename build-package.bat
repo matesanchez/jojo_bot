@@ -314,8 +314,28 @@ mkdir "%DIST_DIR%\data\user_documents" 2>nul
 
 if not exist "%ROOT%data\manuals" echo  [WARNING] No manuals folder found at %ROOT%data\manuals
 if exist "%ROOT%data\manuals" xcopy /e /i "%ROOT%data\manuals" "%DIST_DIR%\data\manuals"
-if exist "%ROOT%data\chroma_db" xcopy /e /i "%ROOT%data\chroma_db" "%DIST_DIR%\data\chroma_db"
-if exist "%ROOT%data\kb_manifest.json" copy "%ROOT%data\kb_manifest.json" "%DIST_DIR%\data\"
+REM ChromaDB and manifest live in src\backend\ during development
+REM (chroma_db_path defaults to ./chroma_db when running from src\backend\)
+if exist "%BACKEND_DIR%\chroma_db" (
+    echo  Copying ChromaDB from %BACKEND_DIR%\chroma_db
+    xcopy /e /i "%BACKEND_DIR%\chroma_db" "%DIST_DIR%\data\chroma_db"
+) else if exist "%ROOT%data\chroma_db" (
+    echo  Copying ChromaDB from %ROOT%data\chroma_db
+    xcopy /e /i "%ROOT%data\chroma_db" "%DIST_DIR%\data\chroma_db"
+) else (
+    echo  [WARNING] No chroma_db found. Run ingestion first:
+    echo    cd src\backend
+    echo    venv\Scripts\python.exe -m rag.ingest --input ..\..\data\manuals\
+)
+if exist "%BACKEND_DIR%\kb_manifest.json" (
+    echo  Copying manifest from %BACKEND_DIR%\kb_manifest.json
+    copy "%BACKEND_DIR%\kb_manifest.json" "%DIST_DIR%\data\"
+) else if exist "%ROOT%data\kb_manifest.json" (
+    echo  Copying manifest from %ROOT%data\kb_manifest.json
+    copy "%ROOT%data\kb_manifest.json" "%DIST_DIR%\data\"
+) else (
+    echo  [WARNING] No kb_manifest.json found. Will bootstrap from ChromaDB on first run.
+)
 echo  OK
 echo.
 

@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 
 import chromadb
@@ -238,7 +239,37 @@ def ingest(input_dir: str, reset: bool = False) -> None:
             print(f"  → ERROR processing {pdf_path.name}: {type(e).__name__}: {e} — skipping")
             traceback.print_exc()
 
-    print(f"\n✅ Ingestion complete. {len(pdf_files)} documents, ~{total_chunks} chunks indexed.")
+    # --- Write the knowledge base manifest so the UI can list documents ---
+    from rag.kb_manifest import add_documents
+
+    now = datetime.now(timezone.utc).isoformat()
+    manifest_docs = []
+    # Re-scan what we just ingested to build accurate manifest entries
+    for pdf_path in pdf_files:
+        filename = pdf_path.name
+        try:
+            chunks = extract_chunks_from_pdf(pdf_path)
+            if not chunks:
+                continue
+            instruments = sorted({c["instrument"] for c in chunks})
+            page_count = max(c["page_number"] for c in chunks)
+            manifest_docs.append({
+                "source_file": filename,
+                "doc_title": get_doc_title(filename),
+                "instruments": instruments,
+                "chunk_count": len(chunks),
+                "page_count": page_count,
+                "category": "base",
+                "added_at": now,
+            })
+        except Exception:
+            pass  # already logged above
+
+    if manifest_docs:
+        add_documents(manifest_docs)
+        print(f"Updated kb_manifest.json with {len(manifest_docs)} documents.")
+
+    print(f"\nIngestion complete. {len(pdf_files)} documents, ~{total_chunks} chunks indexed.")
 
 
 def ingest_files(
