@@ -5,9 +5,9 @@
 Make sure you've run the ingestion pipeline locally to build the ChromaDB vector database:
 
 ```bash
-cd src/backend
-source venv/bin/activate
-python -m rag.ingest --input ../../data/manuals/
+cd src\backend
+.\venv\Scripts\Activate.ps1
+python -m rag.ingest --input ..\..\data\manuals\
 ```
 
 The `chroma_db/` folder must exist at the project root before building the Docker image.
@@ -20,7 +20,7 @@ The `chroma_db/` folder must exist at the project root before building the Docke
 2. Click **New Project** → **Deploy from GitHub Repo**
 3. Select your `jojobot` repository
 4. In **Settings → Variables**, add:
-   - `ANTHROPIC_API_KEY` = your key from https://console.anthropic.com/settings/keys
+   - `ANTHROPIC_API_KEY` = key
    - `CHROMA_DB_PATH` = `/app/chroma_db`
    - `DATABASE_URL` = `sqlite:///./jojobot.db`
    - `CORS_ORIGINS` = `https://your-vercel-url.vercel.app`
