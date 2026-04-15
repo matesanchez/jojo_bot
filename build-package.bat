@@ -1,4 +1,10 @@
 @echo off
+REM If double-clicked (no parent cmd window), relaunch inside cmd /k so window stays open on error
+if "%RELAUNCHED%"=="" (
+    set RELAUNCHED=1
+    cmd /k "%~f0"
+    exit /b
+)
 setlocal EnableDelayedExpansion
 title Jojo Bot - Build Package
 cd /d "%~dp0"
