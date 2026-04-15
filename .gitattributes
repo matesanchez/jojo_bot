@@ -1,0 +1,9 @@
+# Force Windows line endings for batch files — LF-only .bat files fail on cmd.exe
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+
+# Force Unix line endings for shell scripts
+*.sh    text eol=lf
+
+# Let Git handle everything else automatically
+*       text=auto
