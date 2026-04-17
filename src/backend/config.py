@@ -5,10 +5,16 @@ API key priority order:
   1. %APPDATA%/JojoBot/config.json   (set via the in-app Settings panel)
   2. ANTHROPIC_API_KEY env var / .env file
   3. None — backend starts fine, returns a helpful error on first chat
+
+Path resolution:
+  All file-system paths in Settings (chroma_db_path, manuals_dir, etc.) are
+  absolute-ized against the app directory at validator time. This lets the
+  backend run correctly regardless of the shell CWD the user launched from,
+  and means we do NOT mutate process CWD with os.chdir() as an import
+  side-effect (which breaks callers that also depend on CWD).
 """
 from __future__ import annotations
 
-import os
 import sys
 from functools import lru_cache
 from pathlib import Path
@@ -24,11 +30,9 @@ if getattr(sys, "frozen", False):
 else:
     _app_dir = Path(__file__).parent
 
-load_dotenv(_app_dir / ".env")
+APP_DIR: Path = _app_dir.resolve()
 
-# Also ensure CWD is the app directory so relative paths in settings resolve
-# correctly (e.g. chroma_db_path = ../data/chroma_db).
-os.chdir(_app_dir)
+load_dotenv(APP_DIR / ".env")
 
 VALID_LOG_LEVELS = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
 
@@ -36,6 +40,39 @@ VALID_INSTRUMENTS = {
     "pure", "go", "avant", "start", "pilot_600",
     "basic", "prime", "process", "fplc", "explorer", "purifier", "unicorn", "general",
 }
+
+
+def _absolute_path(value: str) -> str:
+    """Resolve a path string to an absolute path anchored at APP_DIR.
+
+    Absolute inputs are returned unchanged. Relative inputs are resolved
+    against APP_DIR so they do not depend on the caller's CWD.
+    """
+    if not value:
+        return value
+    p = Path(value)
+    if not p.is_absolute():
+        p = APP_DIR / p
+    return str(p.resolve())
+
+
+def _absolute_sqlite_url(url: str) -> str:
+    """If url is a relative sqlite[+driver]:///… URL, rewrite its path to
+    be absolute (anchored at APP_DIR). Non-sqlite URLs are returned as-is.
+    """
+    if not url:
+        return url
+    lowered = url.lower()
+    for prefix in ("sqlite+aiosqlite:///", "sqlite:///"):
+        if lowered.startswith(prefix):
+            raw = url[len(prefix):]
+            # An absolute sqlite URL on Windows uses sqlite:////C:/…; on *nix
+            # it's sqlite:////abs/path. Four slashes ⇒ leading '/' in `raw`.
+            if raw.startswith("/") or (len(raw) > 2 and raw[1] == ":"):
+                return url  # already absolute
+            abs_path = (APP_DIR / raw).resolve()
+            return f"{prefix}{abs_path.as_posix()}"
+    return url
 
 
 class Settings(BaseSettings):
@@ -73,6 +110,17 @@ class Settings(BaseSettings):
         if upper not in VALID_LOG_LEVELS:
             raise ValueError(f"Invalid log_level '{v}'. Must be one of: {VALID_LOG_LEVELS}")
         return upper
+
+    @field_validator("chroma_db_path", "manuals_dir", "user_documents_dir")
+    @classmethod
+    def absolute_paths(cls, v: str) -> str:
+        # Resolve relative paths against APP_DIR, not the process CWD.
+        return _absolute_path(v)
+
+    @field_validator("database_url")
+    @classmethod
+    def absolute_sqlite(cls, v: str) -> str:
+        return _absolute_sqlite_url(v)
 
     @property
     def cors_origins_list(self) -> list[str]:

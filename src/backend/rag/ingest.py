@@ -21,35 +21,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from config import settings
 
 # ---------------------------------------------------------------------------
-# Document title mapping
+# Document title derivation
 # ---------------------------------------------------------------------------
-DOCUMENT_TITLES: dict[str, str] = {
-    "AKTA_pure_User_Manual_AP_Czech.pdf": "ÄKTA go Operating Instructions",
-    "AKTA_pure_User_Manual_GMI.pdf": "ÄKTA go User Manual",
-    "AKTA_pure_User_Manual_MUNI.pdf": "ÄKTA pure 25 New Owner's Introduction",
-    "AKTA_pure_New_Owners_Intro.pdf": "ÄKTA avant User Manual",
-    "AKTA_start_Operating_Instructions_APCzech.pdf": "ÄKTA pure User Manual",
-    "AKTA_start_Operating_Instructions.pdf": "ÄKTA pure User Manual (Alt Edition)",
-    "AKTA_go_User_Manual.pdf": "ÄKTA avant User Manual (Cytiva Edition)",
-    "AKTA_avant_User_Manual_AF.pdf": "ÄKTA avant User Manual (AF)",
-    "AKTA_avant_User_Manual_AD.pdf": "ÄKTA avant User Manual (AD)",
-    "AKTAprocess_Operating_Instructions.pdf": "ÄKTA start Operating Instructions",
-    "AKTAbasic_User_Manual_Helsinki.pdf": "ÄKTA start Operating Instructions (Helsinki)",
-    "AKTAbasic_User_Manual_GMI.pdf": "ÄKTA start Maintenance Manual",
-    "AKTA_pilot_600_datasheet.pdf": "ÄKTAprocess Operating Instructions",
-    "AKTA_pilot_600_Operating_Instructions.pdf": "ÄKTA basic User Manual",
-    "AKTApurifier_Making_First_Run.pdf": "ÄKTA pilot 600 Brochure",
-    "AKTA_explorer_Installation_Guide.pdf": "ÄKTA pilot 600 Operating Instructions",
-    "AKTA_prime_User_Manual.pdf": "ÄKTAprime User Manual",
-    "AKTA_explorer_System_Manual.pdf": "ÄKTAprime User Manual (System)",
-    "AKTApurifier_User_Manual.pdf": "ÄKTApurifier First Run Guide",
-    "AKTApurifier_User_Guide.pdf": "ÄKTAexplorer Installation Guide",
-    "AKTApurifier_Training_Guide.pdf": "ÄKTAexplorer System Manual",
-    "AKTA_lab_scale_selection_brochure.pdf": "ÄKTA Lab Scale Selection Guide",
-    "UNICORN7_System_Control_Manual.pdf": "UNICORN 7.0 Method Manual",
-    "UNICORN7.5_System_Control_Manual.pdf": "UNICORN 7.5 Security Hardening Guide",
-    "AKTA_FPLC_System_Manual.pdf": "UNICORN Software Change Description",
-}
+# Titles are derived from the PDF filename so they always match what the
+# user actually uploaded. A prior version of this module carried a hand-
+# maintained DOCUMENT_TITLES dict which had drifted out of sync with the
+# source files and ended up mapping filenames to unrelated titles — that
+# mapping has been removed. `get_doc_title()` below is now the single
+# source of truth.
 
 # Instrument keyword mapping
 INSTRUMENT_KEYWORDS: dict[str, list[str]] = {
@@ -69,10 +48,18 @@ INSTRUMENT_KEYWORDS: dict[str, list[str]] = {
 
 
 def get_doc_title(filename: str) -> str:
-    """Return a clean document title from the filename mapping or auto-generated."""
-    if filename in DOCUMENT_TITLES:
-        return DOCUMENT_TITLES[filename]
-    return filename.replace("_", " ").replace(".pdf", "")
+    """Return a clean, human-readable document title derived from the filename.
+
+    The filename is the authoritative source — we intentionally do NOT look
+    up a hand-maintained table, because such tables drift out of sync as
+    manuals are added/renamed.
+    """
+    stem = filename
+    # Case-insensitive ".pdf" strip
+    if stem.lower().endswith(".pdf"):
+        stem = stem[: -len(".pdf")]
+    # Underscores → spaces, collapse whitespace
+    return " ".join(stem.replace("_", " ").split())
 
 
 def detect_instrument(text: str) -> str:

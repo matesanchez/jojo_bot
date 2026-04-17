@@ -47,6 +47,35 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 _rate_limit: dict[str, list[float]] = defaultdict(list)
 
+# Safety cap — an abusive client rotating IPs/session-ids could otherwise
+# balloon this dict and leak memory over time. We keep at most this many
+# distinct keys; once full, stale-window keys are purged and, if that is
+# not enough, the oldest keys are evicted.
+_RATE_LIMIT_MAX_KEYS = 10_000
+# The longest sliding window across any rate-limiter — used to decide when a
+# key is "stale" and safe to drop.
+_RATE_LIMIT_MAX_WINDOW_SECONDS = 60
+
+
+def _purge_stale_rate_limit_keys(now: float) -> None:
+    """Drop keys whose most-recent request is outside the longest window.
+
+    Also enforces the _RATE_LIMIT_MAX_KEYS cap by evicting the oldest
+    remaining keys (by their last-seen timestamp) if the dict is still
+    over capacity after the stale sweep.
+    """
+    cutoff = now - _RATE_LIMIT_MAX_WINDOW_SECONDS
+    stale = [k for k, ts in _rate_limit.items() if not ts or ts[-1] <= cutoff]
+    for k in stale:
+        _rate_limit.pop(k, None)
+
+    if len(_rate_limit) > _RATE_LIMIT_MAX_KEYS:
+        # Sort by last-seen ascending, evict oldest down to 90 % of the cap
+        target = int(_RATE_LIMIT_MAX_KEYS * 0.9)
+        to_evict = sorted(_rate_limit.items(), key=lambda kv: kv[1][-1] if kv[1] else 0)
+        for k, _ts in to_evict[: len(_rate_limit) - target]:
+            _rate_limit.pop(k, None)
+
 
 def _check_rate(key: str, max_requests: int, window_seconds: int) -> None:
     now = time.time()
@@ -55,6 +84,9 @@ def _check_rate(key: str, max_requests: int, window_seconds: int) -> None:
     if len(_rate_limit[key]) >= max_requests:
         raise HTTPException(status_code=429, detail="Too many requests. Please slow down.")
     _rate_limit[key].append(now)
+    # Opportunistic cleanup — bounds memory growth without needing a timer.
+    if len(_rate_limit) > _RATE_LIMIT_MAX_KEYS:
+        _purge_stale_rate_limit_keys(now)
 
 
 def check_rate_limit(session_id: str) -> None:
@@ -597,11 +629,14 @@ async def delete_document(source_file: str):
 
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
+    import os as _os
     import uvicorn
-    # In production (distributed package) bind only to localhost — the app is
-    # a local tool and should never be accessible from the network.
-    # In development, 0.0.0.0 allows testing from other devices if needed.
-    host = "127.0.0.1" if settings.is_production else "0.0.0.0"
+    # Jojo Bot is a local desktop tool — the backend must never be reachable
+    # from the LAN by default, whether running packaged or in dev mode.
+    # A developer who explicitly wants to hit the backend from another device
+    # (e.g. a phone on the same Wi-Fi) can opt in with JOJO_DEV_LAN=1.
+    _dev_lan = _os.environ.get("JOJO_DEV_LAN", "").strip().lower() in {"1", "true", "yes"}
+    host = "0.0.0.0" if (_dev_lan and not settings.is_production) else "127.0.0.1"
     uvicorn.run(
         "main:app",
         host=host,

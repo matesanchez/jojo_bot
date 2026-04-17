@@ -6,7 +6,7 @@ Jojo Bot lets lab scientists ask natural-language questions about ÄKTA systems 
 
 ---
 
-## What's New — v1.1 (April 2026)
+## What's New — v1.0 (April 2026)
 
 - **Standalone Windows app** — `build-package.bat` compiles Jojo Bot into a fully self-contained `.exe` package with no Python or Node.js installation required for end-users
 - **Native app window** — `Jojo Bot.exe` opens in its own dedicated window (Edge WebView2) instead of a browser tab; no terminal windows appear

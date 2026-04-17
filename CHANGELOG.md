@@ -4,11 +4,11 @@ All notable changes to Jojo Bot are documented here.
 
 ---
 
-## v1.1.0 — April 2026
+## v1.0.0 — April 2026
 
 ### Overview
 
-v1.1 transforms Jojo Bot from a developer-run local server into a polished, self-contained Windows desktop application that any Nurix colleague can unzip and run — without installing Python, Node.js, or any other software.
+v1.0 transforms Jojo Bot from a developer-run local server into a polished, self-contained Windows desktop application that any Nurix colleague can unzip and run — without installing Python, Node.js, or any other software.
 
 ### New Features
 
@@ -69,7 +69,7 @@ v1.1 transforms Jojo Bot from a developer-run local server into a polished, self
 
 ---
 
-## v1.0.0 — 2025
+## v0.1.0 — 2025 (internal development build)
 
 ### Initial Release
 

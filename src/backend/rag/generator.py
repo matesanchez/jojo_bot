@@ -9,7 +9,7 @@ from pathlib import Path
 import anthropic
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from config import settings, get_api_key
+from config import settings, get_api_key, APP_DIR
 
 logger = logging.getLogger(__name__)
 
@@ -41,16 +41,34 @@ def reset_client() -> None:
 
 
 def load_system_prompt() -> str:
-    """Read system prompt from disk (cached after first read)."""
+    """Read system prompt from disk (cached after first read).
+
+    Candidates are checked in order. APP_DIR-anchored paths come first so
+    the lookup does not depend on the process CWD — this matters both for
+    the frozen .exe (where APP_DIR is next to backend.exe) and for the dev
+    server when it's launched from elsewhere.
+    """
     global _system_prompt
     if _system_prompt is None:
+        here = Path(__file__).resolve()
         candidates = [
+            # Packaged .exe — PyInstaller places prompts/ next to backend.exe
+            APP_DIR / "prompts" / "system_prompt.txt",
+            # PyInstaller onefile bootstrapper copies resources to _MEIPASS
+            Path(getattr(sys, "_MEIPASS", "")) / "prompts" / "system_prompt.txt"
+                if getattr(sys, "_MEIPASS", None) else None,
+            # Dev tree — src/backend is CWD, prompts/ is two levels up
+            here.parents[2] / "prompts" / "system_prompt.txt",
+            # Dev tree — repo root
+            here.parents[3] / "prompts" / "system_prompt.txt",
+            # CWD-relative fallbacks (kept for back-compat)
             Path("prompts/system_prompt.txt"),
             Path("../../prompts/system_prompt.txt"),
-            Path(__file__).resolve().parents[3] / "prompts" / "system_prompt.txt",
         ]
-        checked = []
+        checked: list[str] = []
         for p in candidates:
+            if p is None:
+                continue
             checked.append(str(p))
             if p.exists():
                 _system_prompt = p.read_text(encoding="utf-8")

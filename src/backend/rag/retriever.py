@@ -20,6 +20,21 @@ _collection = None
 _lock = asyncio.Lock()
 
 
+def _title_from_filename(filename: str) -> str:
+    """Derive a human-readable title from a PDF filename.
+
+    Kept identical to ingest.get_doc_title() so the retriever can heal
+    stored titles without importing the ingest module (which would pull
+    PyMuPDF into the request path).
+    """
+    if not filename:
+        return ""
+    stem = filename
+    if stem.lower().endswith(".pdf"):
+        stem = stem[: -len(".pdf")]
+    return " ".join(stem.replace("_", " ").split())
+
+
 async def _get_collection_async():
     """Async-safe collection accessor — initialises once, reuses thereafter."""
     global _client, _collection
@@ -107,11 +122,17 @@ def retrieve(
     distances = results.get("distances", [[]])[0]
 
     for text, meta, dist in zip(documents, metadatas, distances):
+        source_file = meta.get("source_file", "") or ""
+        # Always derive the display title from the filename. This makes
+        # citations resilient to stale or incorrect titles that may be
+        # baked into an older chroma_db — the filename is authoritative.
+        doc_title = _title_from_filename(source_file) or meta.get("doc_title", "")
+
         chunks.append(
             {
                 "text": text,
-                "source_file": meta.get("source_file", ""),
-                "doc_title": meta.get("doc_title", ""),
+                "source_file": source_file,
+                "doc_title": doc_title,
                 "section": meta.get("section_header", ""),
                 "page": meta.get("page_number", 0),
                 "instrument": meta.get("instrument", "general"),
