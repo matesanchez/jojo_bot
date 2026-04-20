@@ -36,10 +36,15 @@ export default function MessageBubble({ message }: Props) {
 
   const isUser = message.role === "user";
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(message.content);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(message.content);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard API unavailable (e.g. non-HTTPS context) — silent fail
+      console.warn("Clipboard write failed");
+    }
   };
 
   if (isUser) {

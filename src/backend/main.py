@@ -7,8 +7,6 @@ import asyncio
 import json
 import logging
 import queue as thread_queue
-import shutil
-import tempfile
 import threading
 import time
 from collections import defaultdict

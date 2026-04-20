@@ -21,6 +21,14 @@ const INSTRUMENTS = [
   { value: "go", label: "ÄKTA go" },
   { value: "avant", label: "ÄKTA avant" },
   { value: "start", label: "ÄKTA start" },
+  { value: "pilot_600", label: "ÄKTA pilot 600" },
+  { value: "basic", label: "ÄKTA basic" },
+  { value: "prime", label: "ÄKTA prime" },
+  { value: "process", label: "ÄKTA process" },
+  { value: "fplc", label: "ÄKTA FPLC" },
+  { value: "explorer", label: "ÄKTA explorer" },
+  { value: "purifier", label: "ÄKTA purifier" },
+  { value: "unicorn", label: "UNICORN software" },
 ];
 
 interface Props {
@@ -75,11 +83,16 @@ export default function ProtocolDialog({ isOpen, onClose, sessionId }: Props) {
     }
   };
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     if (result) {
-      navigator.clipboard.writeText(result.protocol_markdown);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      try {
+        await navigator.clipboard.writeText(result.protocol_markdown);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch {
+        console.warn("Clipboard write failed");
+        setError("Could not copy to clipboard. Try downloading instead.");
+      }
     }
   };
 
