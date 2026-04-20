@@ -1,10 +1,20 @@
 """
 retriever.py — Semantic search over the ChromaDB 'akta_manuals' collection.
+
+Also owns the process-wide ChromaDB client singleton.  Every module that
+needs to talk to ChromaDB (main.py health endpoint, ingest, manifest
+bootstrap, document deletion) MUST use ``get_shared_client()`` instead of
+creating its own ``chromadb.PersistentClient``.
+
+Why: ChromaDB's PersistentClient opens SQLite and HNSW-index files.
+On Windows, multiple PersistentClient instances pointed at the same path
+compete for file locks, causing silent failures (queries return 0 results)
+or outright crashes.  A single shared instance avoids all of this.
 """
 from __future__ import annotations
 
-import asyncio
 import sys
+import threading
 from pathlib import Path
 
 import chromadb
@@ -13,11 +23,69 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from config import settings, VALID_INSTRUMENTS
 
 # ---------------------------------------------------------------------------
-# Thread-safe singleton for the ChromaDB collection
+# Process-wide ChromaDB singleton (thread-safe)
 # ---------------------------------------------------------------------------
 _client: chromadb.PersistentClient | None = None
 _collection = None
-_lock = asyncio.Lock()
+_init_lock = threading.Lock()
+
+
+def get_shared_client() -> chromadb.PersistentClient:
+    """Return the shared PersistentClient, creating it on first call.
+
+    Thread-safe — safe to call from the async event loop, from background
+    ingest threads, and from the CLI ingest entrypoint.
+    """
+    global _client
+    if _client is not None:
+        return _client
+    with _init_lock:
+        if _client is not None:          # double-check after lock
+            return _client
+        chroma_path = Path(settings.chroma_db_path).resolve()
+        chroma_path.mkdir(parents=True, exist_ok=True)
+        _client = chromadb.PersistentClient(path=str(chroma_path))
+        return _client
+
+
+def _get_collection():
+    """Return the cached collection, or look it up from the shared client.
+
+    Raises RuntimeError if the collection has never been created (i.e. the
+    ingest pipeline has not been run yet).  This is intentional — callers
+    like ``retrieve()`` should surface a clear error rather than silently
+    returning zero results.
+
+    The lookup is retried on every call when the collection is not yet
+    cached, so it will succeed as soon as a first ingest completes.
+    """
+    global _collection
+    if _collection is not None:
+        return _collection
+    with _init_lock:
+        if _collection is not None:
+            return _collection
+        client = get_shared_client()
+        try:
+            _collection = client.get_collection("akta_manuals")
+        except Exception:
+            raise RuntimeError(
+                "ChromaDB collection 'akta_manuals' not found. "
+                "Run the ingestion script first:\n"
+                "  python -m rag.ingest --input ../../data/manuals/"
+            )
+        return _collection
+
+
+def reset_collection_cache() -> None:
+    """Clear the cached collection reference.
+
+    Call after operations that may create the collection for the first time
+    (e.g. the first-ever document upload) so that subsequent ``retrieve()``
+    calls pick it up instead of raising RuntimeError.
+    """
+    global _collection
+    _collection = None
 
 
 def _title_from_filename(filename: str) -> str:
@@ -33,44 +101,6 @@ def _title_from_filename(filename: str) -> str:
     if stem.lower().endswith(".pdf"):
         stem = stem[: -len(".pdf")]
     return " ".join(stem.replace("_", " ").split())
-
-
-async def _get_collection_async():
-    """Async-safe collection accessor — initialises once, reuses thereafter."""
-    global _client, _collection
-    if _collection is not None:
-        return _collection
-    async with _lock:
-        # Double-check after acquiring lock
-        if _collection is not None:
-            return _collection
-        chroma_path = Path(settings.chroma_db_path).resolve()
-        _client = chromadb.PersistentClient(path=str(chroma_path))
-        try:
-            _collection = _client.get_collection("akta_manuals")
-        except Exception:
-            raise RuntimeError(
-                "ChromaDB collection 'akta_manuals' not found. "
-                "Run the ingestion script first:\n"
-                "  python -m rag.ingest --input ../../data/manuals/"
-            )
-    return _collection
-
-
-def _get_collection_sync():
-    """Sync accessor for non-async callers (e.g. health endpoint)."""
-    global _client, _collection
-    if _collection is None:
-        chroma_path = Path(settings.chroma_db_path).resolve()
-        _client = chromadb.PersistentClient(path=str(chroma_path))
-        try:
-            _collection = _client.get_collection("akta_manuals")
-        except Exception:
-            raise RuntimeError(
-                "ChromaDB collection 'akta_manuals' not found. "
-                "Run: python -m rag.ingest --input ../../data/manuals/"
-            )
-    return _collection
 
 
 def retrieve(
@@ -103,7 +133,7 @@ def retrieve(
                 f"Must be one of: {sorted(VALID_INSTRUMENTS)}"
             )
 
-    collection = _get_collection_sync()
+    collection = _get_collection()
 
     where = None
     if instrument_filter and instrument_filter != "general":

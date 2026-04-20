@@ -17,7 +17,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import List
 
-import chromadb
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -37,7 +36,7 @@ from db.session_store import (
     update_session_title,
 )
 from rag.generator import generate, reset_client, should_search_web, suggest_followups
-from rag.retriever import retrieve
+from rag.retriever import get_shared_client, reset_collection_cache, retrieve
 
 logging.basicConfig(level=settings.log_level)
 logger = logging.getLogger(__name__)
@@ -118,10 +117,12 @@ async def lifespan(app: FastAPI):
     user_docs_path = Path(settings.user_documents_dir).resolve()
     user_docs_path.mkdir(parents=True, exist_ok=True)
 
-    # Warm-up: verify ChromaDB collection is accessible (fail fast on bad config)
+    # Warm-up: initialise the shared ChromaDB client and verify the collection
+    # is accessible.  Using get_shared_client() ensures a single PersistentClient
+    # for the entire process — creating duplicates causes SQLite lock conflicts
+    # on Windows that silently return 0 documents.
     try:
-        chroma_path = Path(settings.chroma_db_path).resolve()
-        client = chromadb.PersistentClient(path=str(chroma_path))
+        client = get_shared_client()
         client.get_collection("akta_manuals")
         logger.info("ChromaDB collection 'akta_manuals' is ready.")
     except Exception:
@@ -289,12 +290,13 @@ async def remove_session(session_id: str, db: AsyncSession = Depends(get_db)):
 async def health():
     doc_count = 0
     try:
-        chroma_path = Path(settings.chroma_db_path).resolve()
-        client = chromadb.PersistentClient(path=str(chroma_path))
+        client = get_shared_client()
         collection = client.get_collection("akta_manuals")
         doc_count = collection.count()
-    except Exception:
-        pass
+    except Exception as exc:
+        # Log the real reason so it shows up in backend.log — a silent
+        # "pass" here was the main reason "0 documents" was hard to debug.
+        logger.debug("Health check could not read ChromaDB: %s", exc)
     return {
         "status": "ok",
         "version": "1.0.0",
@@ -530,6 +532,11 @@ async def upload_documents(
                 e["chunk_count"] = per_file
         add_documents(new_entries)
 
+        # Clear the retriever's cached collection reference so it picks up
+        # newly-created collections (matters on first-ever upload when the
+        # collection didn't exist at server startup).
+        reset_collection_cache()
+
         progress_q.put({
             "type": "done",
             "chunks_added": result["chunks_added"],
@@ -598,10 +605,9 @@ async def delete_document(source_file: str):
             detail="Base documents cannot be deleted via the API.",
         )
 
-    # Remove from ChromaDB
+    # Remove from ChromaDB (uses the shared client — never create a new one)
     try:
-        chroma_path = Path(settings.chroma_db_path).resolve()
-        client = chromadb.PersistentClient(path=str(chroma_path))
+        client = get_shared_client()
         collection = client.get_collection("akta_manuals")
         existing = collection.get(where={"source_file": {"$eq": source_file}}, include=[])
         if existing["ids"]:

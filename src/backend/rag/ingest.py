@@ -270,6 +270,11 @@ def ingest_files(
     Uses deterministic chunk IDs (filename::chunk_index) so re-uploading the same
     file is safe — existing chunks are replaced (upsert) rather than duplicated.
 
+    This function is called from the FastAPI upload endpoint's background thread.
+    It uses the process-wide shared ChromaDB client (via retriever.get_shared_client)
+    to avoid creating duplicate PersistentClient instances, which cause SQLite lock
+    conflicts on Windows.
+
     Args:
         file_paths:          List of absolute Path objects pointing to PDFs.
         instrument_override: If not "auto", force all chunks to this instrument tag.
@@ -278,9 +283,9 @@ def ingest_files(
     Returns:
         {"files_processed": int, "chunks_added": int, "errors": list[str]}
     """
-    chroma_path = Path(settings.chroma_db_path).resolve()
-    chroma_path.mkdir(parents=True, exist_ok=True)
-    client = chromadb.PersistentClient(path=str(chroma_path))
+    from rag.retriever import get_shared_client
+
+    client = get_shared_client()
     collection = client.get_or_create_collection(
         name="akta_manuals",
         metadata={"hnsw:space": "cosine"},

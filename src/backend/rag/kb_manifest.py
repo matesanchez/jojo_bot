@@ -69,7 +69,6 @@ def bootstrap_from_chromadb() -> None:
     Scan ChromaDB metadata and generate kb_manifest.json for existing documents.
     Only called when the manifest file is absent (i.e., first run after upgrade).
     """
-    import chromadb
     from config import settings
 
     logger.info("kb_manifest.json not found — bootstrapping from ChromaDB metadata...")
@@ -79,7 +78,9 @@ def bootstrap_from_chromadb() -> None:
         return
 
     try:
-        client = chromadb.PersistentClient(path=str(chroma_path))
+        # Use the shared client — never create a second PersistentClient
+        from rag.retriever import get_shared_client
+        client = get_shared_client()
         collection = client.get_collection("akta_manuals")
     except Exception:
         logger.info("Collection 'akta_manuals' not found — skipping bootstrap")

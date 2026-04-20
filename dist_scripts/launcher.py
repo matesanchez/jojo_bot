@@ -251,7 +251,7 @@ def main() -> None:
 
             webview.create_window(
                 title="Jojo Bot \u2014 Purification Expert",
-                url=f"http://localhost:{FRONTEND_PORT}",
+                url=f"http://127.0.0.1:{FRONTEND_PORT}",
                 width=1440,
                 height=900,
                 resizable=True,
@@ -266,7 +266,7 @@ def main() -> None:
         except Exception:
             # Fallback for machines where WebView2 is unavailable (very rare on Win10 21H1+).
             import webbrowser
-            webbrowser.open(f"http://localhost:{FRONTEND_PORT}")
+            webbrowser.open(f"http://127.0.0.1:{FRONTEND_PORT}")
             try:
                 while True:
                     if (backend_proc and backend_proc.poll() is not None) or \
