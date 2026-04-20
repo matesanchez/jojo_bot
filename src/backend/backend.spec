@@ -98,7 +98,8 @@ a = Analysis(
     excludes=[
         "tkinter",
         "matplotlib",
-        "numpy",
+        # NOTE: numpy is NOT excluded — chromadb/api/types.py imports it,
+        # so removing it makes backend.exe fail on first import.
         "pandas",
         "scipy",
         "PIL",

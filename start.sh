@@ -16,7 +16,7 @@ sleep 3
 # Start frontend
 echo "Starting frontend on :3000..."
 cd src/frontend
-npm run dev &
+npm start &
 FRONTEND_PID=$!
 cd ../..
 

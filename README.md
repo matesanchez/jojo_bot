@@ -55,7 +55,6 @@ jojobot/
 ├── .env.example                    # Template for required environment variables
 ├── start.sh                        # Start both servers with one command (dev)
 ├── build-package.bat               # Build self-contained Windows distribution
-├── DEPLOY.md                       # Step-by-step deployment guide
 ├── CHANGELOG.md                    # Version history and release notes
 ├── data/
 │   ├── manuals/                    # PDF manuals here (not in Git — 222 MB)
@@ -76,7 +75,6 @@ jojobot/
     │   ├── main.py                 # FastAPI app and all endpoints
     │   ├── backend.spec            # PyInstaller spec for backend.exe
     │   ├── requirements.txt
-    │   ├── Dockerfile
     │   ├── test_pipeline.py        # Integration test suite
     │   ├── db/
     │   │   ├── models.py           # Session & Message SQLAlchemy models
@@ -213,12 +211,6 @@ Tests cover the retriever, generator, session store CRUD, and app import.
 - Input messages are limited to 10,000 characters; rate limiting: 30 req/min per session (chat), 10 req/min per IP (settings), 5 req/min per IP (uploads)
 - File uploads are restricted to PDF only, max 50 MB per file, with server-side path containment checks using `Path.relative_to()` (Windows-safe)
 - The backend binds to `127.0.0.1` in production — not accessible from outside the local machine
-
----
-
-## Deployment (Cloud)
-
-See [DEPLOY.md](DEPLOY.md) for step-by-step instructions for Railway (backend) and Vercel (frontend).
 
 ---
 

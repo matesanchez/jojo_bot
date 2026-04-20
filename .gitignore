@@ -21,6 +21,8 @@ chroma_db/
 *.db-wal
 # User-uploaded documents
 data/user_documents/
+# Knowledge base manifest (regenerated from ChromaDB on each machine)
+**/kb_manifest.json
 
 # ── Build artefacts — regenerated, never commit ───────────────────────────────
 dist/

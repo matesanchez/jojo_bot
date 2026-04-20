@@ -15,6 +15,8 @@ const INSTRUMENTS = [
   { value: "process", label: "ÄKTA process" },
   { value: "fplc", label: "ÄKTA FPLC" },
   { value: "explorer", label: "ÄKTA explorer" },
+  { value: "purifier", label: "ÄKTA purifier" },
+  { value: "unicorn", label: "UNICORN" },
 ];
 
 interface Props {

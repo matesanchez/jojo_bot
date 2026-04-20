@@ -80,4 +80,4 @@ v1.0 transforms Jojo Bot from a developer-run local server into a polished, self
 - Purification protocol generation (affinity, IEX, SEC, HIC, multi-step)
 - Session persistence via SQLite
 - Suggested follow-up questions
-- Railway + Vercel deployment support
+- Local development launcher (`start.sh`)
