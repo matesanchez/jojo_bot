@@ -1,0 +1,2778 @@
+{
+  "version": 1,
+  "documents": [
+    {
+      "source_file": "AKTA_avant_Getting_Started.pdf",
+      "doc_title": "AKTA avant Getting Started",
+      "instruments": [
+        "avant",
+        "general",
+        "unicorn"
+      ],
+      "chunk_count": 147,
+      "page_count": 144,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_avant_User_Manual_AD.pdf",
+      "doc_title": "AKTA avant User Manual AD",
+      "instruments": [
+        "avant",
+        "general",
+        "unicorn"
+      ],
+      "chunk_count": 553,
+      "page_count": 531,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_avant_User_Manual_AF.pdf",
+      "doc_title": "AKTA avant User Manual AF",
+      "instruments": [
+        "avant",
+        "general",
+        "unicorn"
+      ],
+      "chunk_count": 543,
+      "page_count": 516,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_avant_User_Manual_Helsinki.pdf",
+      "doc_title": "AKTA avant User Manual Helsinki",
+      "instruments": [
+        "avant",
+        "general",
+        "unicorn"
+      ],
+      "chunk_count": 553,
+      "page_count": 531,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_explorer_Installation_Guide.pdf",
+      "doc_title": "AKTA explorer Installation Guide",
+      "instruments": [
+        "explorer",
+        "general"
+      ],
+      "chunk_count": 35,
+      "page_count": 36,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_explorer_System_Manual.pdf",
+      "doc_title": "AKTA explorer System Manual",
+      "instruments": [
+        "explorer",
+        "general"
+      ],
+      "chunk_count": 158,
+      "page_count": 142,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_FPLC_Grigorieff.pdf",
+      "doc_title": "AKTA FPLC Grigorieff",
+      "instruments": [
+        "fplc",
+        "general"
+      ],
+      "chunk_count": 75,
+      "page_count": 65,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_FPLC_System_Manual.pdf",
+      "doc_title": "AKTA FPLC System Manual",
+      "instruments": [
+        "fplc",
+        "general"
+      ],
+      "chunk_count": 90,
+      "page_count": 86,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_go_Operating_Instructions.pdf",
+      "doc_title": "AKTA go Operating Instructions",
+      "instruments": [
+        "general",
+        "go",
+        "unicorn"
+      ],
+      "chunk_count": 124,
+      "page_count": 117,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_go_User_Manual.pdf",
+      "doc_title": "AKTA go User Manual",
+      "instruments": [
+        "general",
+        "go",
+        "unicorn"
+      ],
+      "chunk_count": 283,
+      "page_count": 268,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_lab_scale_selection_brochure.pdf",
+      "doc_title": "AKTA lab scale selection brochure",
+      "instruments": [
+        "avant",
+        "general",
+        "go",
+        "pure",
+        "start",
+        "unicorn"
+      ],
+      "chunk_count": 21,
+      "page_count": 18,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_pilot_600_datasheet.pdf",
+      "doc_title": "AKTA pilot 600 datasheet",
+      "instruments": [
+        "general",
+        "pilot_600",
+        "process",
+        "pure",
+        "unicorn"
+      ],
+      "chunk_count": 14,
+      "page_count": 8,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_pilot_600_Operating_Instructions.pdf",
+      "doc_title": "AKTA pilot 600 Operating Instructions",
+      "instruments": [
+        "general",
+        "pilot_600",
+        "unicorn"
+      ],
+      "chunk_count": 215,
+      "page_count": 206,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_prime_User_Manual.pdf",
+      "doc_title": "AKTA prime User Manual",
+      "instruments": [
+        "general",
+        "prime"
+      ],
+      "chunk_count": 174,
+      "page_count": 147,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_pure_New_Owners_Intro.pdf",
+      "doc_title": "AKTA pure New Owners Intro",
+      "instruments": [
+        "general",
+        "pure",
+        "unicorn"
+      ],
+      "chunk_count": 10,
+      "page_count": 7,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_pure_User_Manual_AP_Czech.pdf",
+      "doc_title": "AKTA pure User Manual AP Czech",
+      "instruments": [
+        "general",
+        "pure",
+        "unicorn"
+      ],
+      "chunk_count": 568,
+      "page_count": 519,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_pure_User_Manual_GMI.pdf",
+      "doc_title": "AKTA pure User Manual GMI",
+      "instruments": [
+        "general",
+        "pure",
+        "unicorn"
+      ],
+      "chunk_count": 570,
+      "page_count": 522,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_pure_User_Manual_MUNI.pdf",
+      "doc_title": "AKTA pure User Manual MUNI",
+      "instruments": [
+        "general",
+        "pure",
+        "unicorn"
+      ],
+      "chunk_count": 606,
+      "page_count": 570,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_SOP_pure_Biomanufacturing.pdf",
+      "doc_title": "AKTA SOP pure Biomanufacturing",
+      "instruments": [
+        "general",
+        "pure",
+        "unicorn"
+      ],
+      "chunk_count": 35,
+      "page_count": 21,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_start_Maintenance_Manual.pdf",
+      "doc_title": "AKTA start Maintenance Manual",
+      "instruments": [
+        "general",
+        "start",
+        "unicorn"
+      ],
+      "chunk_count": 171,
+      "page_count": 164,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_start_Operating_Instructions.pdf",
+      "doc_title": "AKTA start Operating Instructions",
+      "instruments": [
+        "general",
+        "start",
+        "unicorn"
+      ],
+      "chunk_count": 288,
+      "page_count": 276,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTA_start_Operating_Instructions_APCzech.pdf",
+      "doc_title": "AKTA start Operating Instructions APCzech",
+      "instruments": [
+        "general",
+        "start",
+        "unicorn"
+      ],
+      "chunk_count": 288,
+      "page_count": 276,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTAbasic_User_Manual_GMI.pdf",
+      "doc_title": "AKTAbasic User Manual GMI",
+      "instruments": [
+        "basic",
+        "general",
+        "unicorn"
+      ],
+      "chunk_count": 139,
+      "page_count": 134,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTAbasic_User_Manual_Helsinki.pdf",
+      "doc_title": "AKTAbasic User Manual Helsinki",
+      "instruments": [
+        "basic",
+        "general",
+        "unicorn"
+      ],
+      "chunk_count": 139,
+      "page_count": 134,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTAprocess_Operating_Instructions.pdf",
+      "doc_title": "AKTAprocess Operating Instructions",
+      "instruments": [
+        "general",
+        "process"
+      ],
+      "chunk_count": 186,
+      "page_count": 180,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTApurifier_Making_First_Run.pdf",
+      "doc_title": "AKTApurifier Making First Run",
+      "instruments": [
+        "general",
+        "purifier"
+      ],
+      "chunk_count": 40,
+      "page_count": 38,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTApurifier_Training_Guide.pdf",
+      "doc_title": "AKTApurifier Training Guide",
+      "instruments": [
+        "fplc",
+        "general",
+        "purifier"
+      ],
+      "chunk_count": 43,
+      "page_count": 43,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTApurifier_User_Guide.pdf",
+      "doc_title": "AKTApurifier User Guide",
+      "instruments": [
+        "general",
+        "purifier"
+      ],
+      "chunk_count": 199,
+      "page_count": 180,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "AKTApurifier_User_Manual.pdf",
+      "doc_title": "AKTApurifier User Manual",
+      "instruments": [
+        "general",
+        "purifier"
+      ],
+      "chunk_count": 197,
+      "page_count": 178,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "Biortus-Nurix-Purification protocol for StrepTactin XT 4Flow affinity.pdf",
+      "doc_title": "Biortus-Nurix-Purification protocol for StrepTactin XT 4Flow affinity",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "EileenAmbing_ULP1_purification ELN entry.pdf",
+      "doc_title": "EileenAmbing ULP1 purification ELN entry",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 8,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "FZR1_NBVC-N21320_Purification SOP.pdf",
+      "doc_title": "FZR1 NBVC-N21320 Purification SOP",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "FZR1_NBVC-N21320_Purification SOP_Signed.pdf",
+      "doc_title": "FZR1 NBVC-N21320 Purification SOP Signed",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "IDP Purification Draft - Sonication.pdf",
+      "doc_title": "IDP Purification Draft - Sonication",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 1,
+      "page_count": 1,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "purelink_hipure_plasmid_filter_purification_man.pdf",
+      "doc_title": "purelink hipure plasmid filter purification man",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 36,
+      "page_count": 36,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "PureSpeed 10\u00b5l BV Ni-IMAC or GST Protocol.pdf",
+      "doc_title": "PureSpeed 10\u00b5l BV Ni-IMAC or GST Protocol",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 3,
+      "page_count": 2,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "RAF1_NBVC-N20391_Purification SOP.pdf",
+      "doc_title": "RAF1 NBVC-N20391 Purification SOP",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "RAF1_NBVC-N20391_Purification SOP_EL.pdf",
+      "doc_title": "RAF1 NBVC-N20391 Purification SOP EL",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SEC Cleaning Protocol.pdf",
+      "doc_title": "SEC Cleaning Protocol",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 1,
+      "page_count": 1,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification ADAR1 N-Zalpha-Zbeta 2-366 NECC-N00257_1A.pdf",
+      "doc_title": "SOP Protein Purification ADAR1 N-Zalpha-Zbeta 2-366 NECC-N00257 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification ADAR1 RBD3 708-801 NECC-N00208_1A.pdf",
+      "doc_title": "SOP Protein Purification ADAR1 RBD3 708-801 NECC-N00208 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification ADAR1 Zalpha 133-209 NECC-N00210_1A.pdf",
+      "doc_title": "SOP Protein Purification ADAR1 Zalpha 133-209 NECC-N00210 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification ADAR1 Zalpha-Zbeta 133-366 NECC-N00252_1A.pdf",
+      "doc_title": "SOP Protein Purification ADAR1 Zalpha-Zbeta 133-366 NECC-N00252 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification ADAR1 Zalpha-Zbeta-RBD1-RBD2-RBD3 NECC-N00261_6A.pdf",
+      "doc_title": "SOP Protein Purification ADAR1 Zalpha-Zbeta-RBD1-RBD2-RBD3 NECC-N00261 6A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification ADAR1 Zbeta 288-366 NECC-N00209_1A.pdf",
+      "doc_title": "SOP Protein Purification ADAR1 Zbeta 288-366 NECC-N00209 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification ADAR1 Zbeta-RBD1 NECC-N00259_1A.pdf",
+      "doc_title": "SOP Protein Purification ADAR1 Zbeta-RBD1 NECC-N00259 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification ADAR2 catalytic NBVC-N00209_1A.pdf",
+      "doc_title": "SOP Protein Purification ADAR2 catalytic NBVC-N00209 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification IRAK4 KD 160-460 1-127 NECC-N00037.pdf",
+      "doc_title": "SOP Protein Purification IRAK4 KD 160-460 1-127 NECC-N00037",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification KRAS4b 1-169 G12C cys-light NECC-N00198.pdf",
+      "doc_title": "SOP Protein Purification KRAS4b 1-169 G12C cys-light NECC-N00198",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification KRAS4b 1-169 G12C cys-light NECC-N00278.pdf",
+      "doc_title": "SOP Protein Purification KRAS4b 1-169 G12C cys-light NECC-N00278",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 10,
+      "page_count": 7,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification KRAS4b 1-169 G12D NECC-N00050.pdf",
+      "doc_title": "SOP Protein Purification KRAS4b 1-169 G12D NECC-N00050",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification KRAS4b 1-169 G12D NECC-N00172.pdf",
+      "doc_title": "SOP Protein Purification KRAS4b 1-169 G12D NECC-N00172",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification KRAS4b 1-169 NECC-N00048.pdf",
+      "doc_title": "SOP Protein Purification KRAS4b 1-169 NECC-N00048",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification KRAS4b 1-188 G12C NECC-N00302.pdf",
+      "doc_title": "SOP Protein Purification KRAS4b 1-188 G12C NECC-N00302",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 11,
+      "page_count": 8,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification KRAS4b 1-188 G12D NECC-N00303.pdf",
+      "doc_title": "SOP Protein Purification KRAS4b 1-188 G12D NECC-N00303",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification KRAS4b 1-188 NECC-N00279.pdf",
+      "doc_title": "SOP Protein Purification KRAS4b 1-188 NECC-N00279",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 11,
+      "page_count": 7,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification Mpro 1-304 NECC-N00291.pdf",
+      "doc_title": "SOP Protein Purification Mpro 1-304 NECC-N00291",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification Nsp1 1-127 NECC-N00288.pdf",
+      "doc_title": "SOP Protein Purification Nsp1 1-127 NECC-N00288",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification Nsp1 1-180 NECC-N00294.pdf",
+      "doc_title": "SOP Protein Purification Nsp1 1-180 NECC-N00294",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification PLpro 1565-1878 C111S NECC-N00346.pdf",
+      "doc_title": "SOP Protein Purification PLpro 1565-1878 C111S NECC-N00346",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification PLpro 1565-1878 NECC-N00273.pdf",
+      "doc_title": "SOP Protein Purification PLpro 1565-1878 NECC-N00273",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification STAT6 core 123-631 NECC-N00344_1A.pdf",
+      "doc_title": "SOP Protein Purification STAT6 core 123-631 NECC-N00344 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification ZAP70 FL 1-619 NBVC-N00124_10A.pdf",
+      "doc_title": "SOP Protein Purification ZAP70 FL 1-619 NBVC-N00124 10A",
+      "instruments": [
+        "fplc",
+        "general"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification ZAP70 KD 327-606 NBVC-N00030_6A.pdf",
+      "doc_title": "SOP Protein Purification ZAP70 KD 327-606 NBVC-N00030 6A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Protein Purification ZAP70 KD 327-619 NBVC-N00042_10A.pdf",
+      "doc_title": "SOP Protein Purification ZAP70 KD 327-619 NBVC-N00042 10A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP Ultracentrifuge .pdf",
+      "doc_title": "SOP Ultracentrifuge",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 3,
+      "page_count": 2,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein Purification CISH - NECC-N00352_20210728.pdf",
+      "doc_title": "SOP-Protein Purification CISH - NECC-N00352 20210728",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein Purification CISH - NECC-N00808_2A_20220803.pdf",
+      "doc_title": "SOP-Protein Purification CISH - NECC-N00808 2A 20220803",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein Purification SOCS2 - NECC-N00637_1A_20220329.pdf",
+      "doc_title": "SOP-Protein Purification SOCS2 - NECC-N00637 1A 20220329",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification 14-3-3 Zeta-Epsilon_N338_1A-2A.pdf",
+      "doc_title": "SOP-Protein-Purification 14-3-3 Zeta-Epsilon N338 1A-2A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification 14-3-3 Zeta-Epsilon_N343_1A-2A.pdf",
+      "doc_title": "SOP-Protein-Purification 14-3-3 Zeta-Epsilon N343 1A-2A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification ADAR1 - NECC-N00689_1A 20220523.pdf",
+      "doc_title": "SOP-Protein-Purification ADAR1 - NECC-N00689 1A 20220523",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification ADAR1 - NECC-N00835_1A NECC-N00836_1A 20220719.pdf",
+      "doc_title": "SOP-Protein-Purification ADAR1 - NECC-N00835 1A NECC-N00836 1A 20220719",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification ADAR1 xtal NECC-N00209_1B.pdf",
+      "doc_title": "SOP-Protein-Purification ADAR1 xtal NECC-N00209 1B",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification ADAR1 xtal NECC-N00209_2A.pdf",
+      "doc_title": "SOP-Protein-Purification ADAR1 xtal NECC-N00209 2A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification ADAR1 xtal NECC-N00210_2A.pdf",
+      "doc_title": "SOP-Protein-Purification ADAR1 xtal NECC-N00210 2A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification ADAR1 xtal NECC-N00252_1B.pdf",
+      "doc_title": "SOP-Protein-Purification ADAR1 xtal NECC-N00252 1B",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification ADAR1 xtal NECC-N00578_1A_N00582_1A_20211005.pdf",
+      "doc_title": "SOP-Protein-Purification ADAR1 xtal NECC-N00578 1A N00582 1A 20211005",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification ADAR2 FL - NBVC-N00329.pdf",
+      "doc_title": "SOP-Protein-Purification ADAR2 FL - NBVC-N00329",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification ADK_1-362_NECC-N21603_001A_20231122.pdf",
+      "doc_title": "SOP-Protein-Purification ADK 1-362 NECC-N21603 001A 20231122",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification B-catenin Arm domain_NECC-N000115_2B.pdf",
+      "doc_title": "SOP-Protein-Purification B-catenin Arm domain NECC-N000115 2B",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification B-catenin Arm domain_NECC-N000115_5A.pdf",
+      "doc_title": "SOP-Protein-Purification B-catenin Arm domain NECC-N000115 5A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification B-catenin Arm domain_NECC-N000115_5B.pdf",
+      "doc_title": "SOP-Protein-Purification B-catenin Arm domain NECC-N000115 5B",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification B-catenin Arm domain_NECC-N000115_6A.pdf",
+      "doc_title": "SOP-Protein-Purification B-catenin Arm domain NECC-N000115 6A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification B-catenin Arm domain_NECC-N000132_1A.pdf",
+      "doc_title": "SOP-Protein-Purification B-catenin Arm domain NECC-N000132 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 7,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification B-catenin Arm domain_NECC-N000133_1A.pdf",
+      "doc_title": "SOP-Protein-Purification B-catenin Arm domain NECC-N000133 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 7,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification B-catenin Arm domain_NECC-N000145_4A.pdf",
+      "doc_title": "SOP-Protein-Purification B-catenin Arm domain NECC-N000145 4A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification B-catenin Arm domain_NECC-N000145_5A.pdf",
+      "doc_title": "SOP-Protein-Purification B-catenin Arm domain NECC-N000145 5A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification b-RAF KD (432-726)_N174_1B.pdf",
+      "doc_title": "SOP-Protein-Purification b-RAF KD (432-726) N174 1B",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification b-RAF N- Structural Domain(1-372)_N247_3A.pdf",
+      "doc_title": "SOP-Protein-Purification b-RAF N- Structural Domain(1-372) N247 3A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification bTrCP_Skp1 - NECC-N00502_1A - 20210524.pdf",
+      "doc_title": "SOP-Protein-Purification bTrCP Skp1 - NECC-N00502 1A - 20210524",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification C_RAF N- Structural Domain(1-265)_N280_1B.pdf",
+      "doc_title": "SOP-Protein-Purification C RAF N- Structural Domain(1-265) N280 1B",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CAK1_NBVC-N20893_001A_NBVC-N20894_001A_20230320.pdf",
+      "doc_title": "SOP-Protein-Purification CAK1 NBVC-N20893 001A NBVC-N20894 001A 20230320",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CAK1_NBVC-N20893_002A_20230615.pdf",
+      "doc_title": "SOP-Protein-Purification CAK1 NBVC-N20893 002A 20230615",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CAK1_NBVC-N20893_003A.pdf",
+      "doc_title": "SOP-Protein-Purification CAK1 NBVC-N20893 003A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 3,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CAK1_NECC-N21258_001A_20220922.pdf",
+      "doc_title": "SOP-Protein-Purification CAK1 NECC-N21258 001A 20220922",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CCNF_NBVC-N20918_001A_20230801.pdf",
+      "doc_title": "SOP-Protein-Purification CCNF NBVC-N20918 001A 20230801",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK12_CYCK1_NBVC-N00585_NBVC-N00618_20220711.pdf",
+      "doc_title": "SOP-Protein-Purification CDK12 CYCK1 NBVC-N00585 NBVC-N00618 20220711",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK12_CYCK1_NBVC-N20725_002A_20221014.pdf",
+      "doc_title": "SOP-Protein-Purification CDK12 CYCK1 NBVC-N20725 002A 20221014",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK12_CYCK1_NBVC-N20725_20221214.pdf",
+      "doc_title": "SOP-Protein-Purification CDK12 CYCK1 NBVC-N20725 20221214",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK12_CYCK1_NCMP-N20035_001A_001B_20230207.pdf",
+      "doc_title": "SOP-Protein-Purification CDK12 CYCK1 NCMP-N20035 001A 001B 20230207",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK12_CYCK1_NCMP-N20042_001A_20230425.pdf",
+      "doc_title": "SOP-Protein-Purification CDK12 CYCK1 NCMP-N20042 001A 20230425",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK12_CYCK1_NCMP-N20046_001A_20230503.pdf",
+      "doc_title": "SOP-Protein-Purification CDK12 CYCK1 NCMP-N20046 001A 20230503",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK12_CYCK1_NCMP-N20046_002A_20231030.pdf",
+      "doc_title": "SOP-Protein-Purification CDK12 CYCK1 NCMP-N20046 002A 20231030",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK13_CYCK1_CAK1_NBVC-N20863_012A_20230214.pdf",
+      "doc_title": "SOP-Protein-Purification CDK13 CYCK1 CAK1 NBVC-N20863 012A 20230214",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK13_CYCK1_NBVC-N00627_1A_20220708.pdf",
+      "doc_title": "SOP-Protein-Purification CDK13 CYCK1 NBVC-N00627 1A 20220708",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK2_NECC-N21422_001A_20230509.pdf",
+      "doc_title": "SOP-Protein-Purification CDK2 NECC-N21422 001A 20230509",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK2_NECC-N21422_002A_20230530.pdf",
+      "doc_title": "SOP-Protein-Purification CDK2 NECC-N21422 002A 20230530",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK9_CYCK1_NBVC-N00625_1B_20220713.pdf",
+      "doc_title": "SOP-Protein-Purification CDK9 CYCK1 NBVC-N00625 1B 20220713",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK9_CYCK1_NCMP-N20032_2A_20230410.pdf",
+      "doc_title": "SOP-Protein-Purification CDK9 CYCK1 NCMP-N20032 2A 20230410",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK9_CYCT1_NBVC-N00614_NBVC-N00611_20220422.pdf",
+      "doc_title": "SOP-Protein-Purification CDK9 CYCT1 NBVC-N00614 NBVC-N00611 20220422",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification CDK9_CYCT1_NCMP-N20037_001A_CYCT1_NBVC-N20858_001A_20230221.pdf",
+      "doc_title": "SOP-Protein-Purification CDK9 CYCT1 NCMP-N20037 001A CYCT1 NBVC-N20858 001A 20230221",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification FBXO22_NCMP-N210059_001A_20240304.pdf",
+      "doc_title": "SOP-Protein-Purification FBXO22 NCMP-N210059 001A 20240304",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification GST-c-RAF KD (306-648;Y340D Y341D)_N236-N238.pdf",
+      "doc_title": "SOP-Protein-Purification GST-c-RAF KD (306-648;Y340D Y341D) N236-N238",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 8,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification KLHL6_NBVC-21044_001A_20240412.pdf",
+      "doc_title": "SOP-Protein-Purification KLHL6 NBVC-21044 001A 20240412",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification KLHL6_NBVC-N21190_20240515.pdf",
+      "doc_title": "SOP-Protein-Purification KLHL6 NBVC-N21190 20240515",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification MPro (biotinylated) - NECC-N00493_2A.pdf",
+      "doc_title": "SOP-Protein-Purification MPro (biotinylated) - NECC-N00493 2A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification MPro - NECC-N00493_1A.pdf",
+      "doc_title": "SOP-Protein-Purification MPro - NECC-N00493 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification NR4A1_LBD_C551S_NECC-N21219_001A_20221027.pdf",
+      "doc_title": "SOP-Protein-Purification NR4A1 LBD C551S NECC-N21219 001A 20221027",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification NR4A1_LBD_NECC-N20464_001A_20230509.pdf",
+      "doc_title": "SOP-Protein-Purification NR4A1 LBD NECC-N20464 001A 20230509",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification NR4A1_NECC-N21206_001A_20240220.pdf",
+      "doc_title": "SOP-Protein-Purification NR4A1 NECC-N21206 001A 20240220",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification NR4A1_NECC-N21209_1A_1B_20221018.pdf",
+      "doc_title": "SOP-Protein-Purification NR4A1 NECC-N21209 1A 1B 20221018",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification NR4A1_NECC-N21211_1A_N21208_1A_20220817.pdf",
+      "doc_title": "SOP-Protein-Purification NR4A1 NECC-N21211 1A N21208 1A 20220817",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification NR4A3_LBD_NECC-N21338_001A_20230509.pdf",
+      "doc_title": "SOP-Protein-Purification NR4A3 LBD NECC-N21338 001A 20230509",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Nsp1 1-127 NECC-N00435 20210228.pdf",
+      "doc_title": "SOP-Protein-Purification Nsp1 1-127 NECC-N00435 20210228",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Nsp1 1-180 NECC-N00432 20210228.pdf",
+      "doc_title": "SOP-Protein-Purification Nsp1 1-180 NECC-N00432 20210228",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Nur77_LBD_NECC-N00442_1A_20220104.pdf",
+      "doc_title": "SOP-Protein-Purification Nur77 LBD NECC-N00442 1A 20220104",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Nur77_LBD_NECC-N00443_1A_1B_20210228.pdf",
+      "doc_title": "SOP-Protein-Purification Nur77 LBD NECC-N00443 1A 1B 20210228",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Nur77_LBD_NECC-N00443_2C_20211217.pdf",
+      "doc_title": "SOP-Protein-Purification Nur77 LBD NECC-N00443 2C 20211217",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Nur77_LBD_NECC-N20465_1A_20221201.pdf",
+      "doc_title": "SOP-Protein-Purification Nur77 LBD NECC-N20465 1A 20221201",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Nur77_NECC-N21170_001A_NECC-N21171_001A_20220809.pdf",
+      "doc_title": "SOP-Protein-Purification Nur77 NECC-N21170 001A NECC-N21171 001A 20220809",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Nur77_Nurr1_LBD_NECC-N00443_2B_N00450_2B_20210908.pdf",
+      "doc_title": "SOP-Protein-Purification Nur77 Nurr1 LBD NECC-N00443 2B N00450 2B 20210908",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Nurr1_LBD_NECC-N00450_1A_20210228.pdf",
+      "doc_title": "SOP-Protein-Purification Nurr1 LBD NECC-N00450 1A 20210228",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Nurr1_LBD_NECC-N00450_1C_20210630.pdf",
+      "doc_title": "SOP-Protein-Purification Nurr1 LBD NECC-N00450 1C 20210630",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Nurr1_LBD_NECC-N00450_3A_3B_20220104.pdf",
+      "doc_title": "SOP-Protein-Purification Nurr1 LBD NECC-N00450 3A 3B 20220104",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification PLPro_NECC-N00273_4A_20210324.pdf",
+      "doc_title": "SOP-Protein-Purification PLPro NECC-N00273 4A 20210324",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification PLPro_NECC-N00273_4F_20210412.pdf",
+      "doc_title": "SOP-Protein-Purification PLPro NECC-N00273 4F 20210412",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification PLPro_NECC-N00273_5A_N00268_3A_20210421.pdf",
+      "doc_title": "SOP-Protein-Purification PLPro NECC-N00273 5A N00268 3A 20210421",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification PLPro_NECC-N00346_1B_20210528.pdf",
+      "doc_title": "SOP-Protein-Purification PLPro NECC-N00346 1B 20210528",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification PNPLA2(1-384)_NBVC-N00193_3A.pdf",
+      "doc_title": "SOP-Protein-Purification PNPLA2(1-384) NBVC-N00193 3A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification PNPLA2_NBVC-N00051_4A.pdf",
+      "doc_title": "SOP-Protein-Purification PNPLA2 NBVC-N00051 4A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification PNPLA3(I148M)_NBVC-N00071_6A.pdf",
+      "doc_title": "SOP-Protein-Purification PNPLA3(I148M) NBVC-N00071 6A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification PNPLA3(S47A)_NBVC-N00072_5A.pdf",
+      "doc_title": "SOP-Protein-Purification PNPLA3(S47A) NBVC-N00072 5A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification PNPLA3_NBVC-N00060_5A.pdf",
+      "doc_title": "SOP-Protein-Purification PNPLA3 NBVC-N00060 5A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification PNPLA3_NECC-N00284-286_1A.pdf",
+      "doc_title": "SOP-Protein-Purification PNPLA3 NECC-N00284-286 1A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 7,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Refolding ADAR1 - NECC-N00694_1A NECC-N00695_1A NECC-N00696_1A 20220405.pdf",
+      "doc_title": "SOP-Protein-Purification Refolding ADAR1 - NECC-N00694 1A NECC-N00695 1A NECC-N00696 1A 20220405",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 3,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Refolding ADAR1 - NECC-N00807_1A 20220523.pdf",
+      "doc_title": "SOP-Protein-Purification Refolding ADAR1 - NECC-N00807 1A 20220523",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Refolding ADAR1 - NECC-N00807_3A 20220615.pdf",
+      "doc_title": "SOP-Protein-Purification Refolding ADAR1 - NECC-N00807 3A 20220615",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Refolding ADAR1 N-term_Z-alpha_Z-beta - NECC-N00257 20210927.pdf",
+      "doc_title": "SOP-Protein-Purification Refolding ADAR1 N-term Z-alpha Z-beta - NECC-N00257 20210927",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Refolding ADAR1 N-term_Z-alpha_Z-beta C125S C304S - NECC-N00688_1A NECC-N00698_1A 20220118.pdf",
+      "doc_title": "SOP-Protein-Purification Refolding ADAR1 N-term Z-alpha Z-beta C125S C304S - NECC-N00688 1A NECC-N00698 1A 20220118",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 3,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Refolding Large Scale ADAR1 N-term_Z-alpha_Z-beta - NECC-N00257_3B.pdf",
+      "doc_title": "SOP-Protein-Purification Refolding Large Scale ADAR1 N-term Z-alpha Z-beta - NECC-N00257 3B",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification Refolding Large Scale ADAR1 N-term_Z-alpha_Z-beta - NECC-N00257_3C.pdf",
+      "doc_title": "SOP-Protein-Purification Refolding Large Scale ADAR1 N-term Z-alpha Z-beta - NECC-N00257 3C",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification SARS-CoV Nsp1 xtal_20210104.pdf",
+      "doc_title": "SOP-Protein-Purification SARS-CoV Nsp1 xtal 20210104",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification TET1_NBVC-N20975.pdf",
+      "doc_title": "SOP-Protein-Purification TET1 NBVC-N20975",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification TET2 catalytic - NBVC-N00285_1A 20210831.pdf",
+      "doc_title": "SOP-Protein-Purification TET2 catalytic - NBVC-N00285 1A 20210831",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification TET2 catalytic - NECC-N200855_1A 20230208.pdf",
+      "doc_title": "SOP-Protein-Purification TET2 catalytic - NECC-N200855 1A 20230208",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification TET2 catalytic - NECC-N20374_002A 20230313.pdf",
+      "doc_title": "SOP-Protein-Purification TET2 catalytic - NECC-N20374 002A 20230313",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification TET2 catalytic xtal - NECC-N00348_1A_1B 20210831.pdf",
+      "doc_title": "SOP-Protein-Purification TET2 catalytic xtal - NECC-N00348 1A 1B 20210831",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification TRIM21_NECC-N21365_002A_20231201.pdf",
+      "doc_title": "SOP-Protein-Purification TRIM21 NECC-N21365 002A 20231201",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification TRIM25_NBVC-N20809_001A_20230622.pdf",
+      "doc_title": "SOP-Protein-Purification TRIM25 NBVC-N20809 001A 20230622",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification-In-Vitro-Phosphorylation CDK12_CYCK1_NCMP-N20035_001C_20230420.pdf",
+      "doc_title": "SOP-Protein-Purification-In-Vitro-Phosphorylation CDK12 CYCK1 NCMP-N20035 001C 20230420",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification-In-Vitro-Phosphorylation CDK13_CYCK1_NCMP-N20039_001C_20230503.pdf",
+      "doc_title": "SOP-Protein-Purification-In-Vitro-Phosphorylation CDK13 CYCK1 NCMP-N20039 001C 20230503",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_AKT1_NBVC-N21149_001A_20240221.pdf",
+      "doc_title": "SOP-Protein-Purification AKT1 NBVC-N21149 001A 20240221",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_AKT1_NECC-N21608_001A_and NECC-N21609_001A_20231127.pdf",
+      "doc_title": "SOP-Protein-Purification AKT1 NECC-N21608 001A and NECC-N21609 001A 20231127",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_AKT_NBVC-N21121_001A_NBVC-N21130_001A_20240708.pdf",
+      "doc_title": "SOP-Protein-Purification AKT NBVC-N21121 001A NBVC-N21130 001A 20240708",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_AKT_NBVC-N21160_001A_20240528.pdf",
+      "doc_title": "SOP-Protein-Purification AKT NBVC-N21160 001A 20240528",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_ALK_NBVC-N21201_N21202_N21204_10012024.pdf",
+      "doc_title": "SOP-Protein-Purification ALK NBVC-N21201 N21202 N21204 10012024",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_ARID1B_NECC-N21162_001A 20240816.pdf",
+      "doc_title": "SOP-Protein-Purification ARID1B NECC-N21162 001A 20240816",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_ARID_NBVC-N21188_001A 20240531.pdf",
+      "doc_title": "SOP-Protein-Purification ARID NBVC-N21188 001A 20240531",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_ARID_NECC-N21161_001A 20240417.pdf",
+      "doc_title": "SOP-Protein-Purification ARID NECC-N21161 001A 20240417",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_ARID_NECC-N21702_001A 20240408.pdf",
+      "doc_title": "SOP-Protein-Purification ARID NECC-N21702 001A 20240408",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_ARID_NECC-N21705_001A 20240329.pdf",
+      "doc_title": "SOP-Protein-Purification ARID NECC-N21705 001A 20240329",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_ARID_NECC-N21804_001A 20240610.pdf",
+      "doc_title": "SOP-Protein-Purification ARID NECC-N21804 001A 20240610",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_BRIL_NECC-N21843_001A_20240926.pdf",
+      "doc_title": "SOP-Protein-Purification BRIL NECC-N21843 001A 20240926",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_BTK_NBVC-N220866_002A_20241126.pdf",
+      "doc_title": "SOP-Protein-Purification BTK NBVC-N220866 002A 20241126",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_Cbl-b_closed_NECC-N21469_005A_20230825.pdf",
+      "doc_title": "SOP-Protein-Purification Cbl-b closed NECC-N21469 005A 20230825",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_Cbl-b_open_NECC-N21469_007A_20231013.pdf",
+      "doc_title": "SOP-Protein-Purification Cbl-b open NECC-N21469 007A 20231013",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_cCBL_NECC-N20047_001A_20230717.pdf",
+      "doc_title": "SOP-Protein-Purification cCBL NECC-N20047 001A 20230717",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_DNAJB1-PRKACA_NECC-N21749_002A_20240916.pdf",
+      "doc_title": "SOP-Protein-Purification DNAJB1-PRKACA NECC-N21749 002A 20240916",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_DNAJB1-PRKACA_NECC-N21837-N21838-N21839-N21840-N21841-N21842_001A_20240808.pdf",
+      "doc_title": "SOP-Protein-Purification DNAJB1-PRKACA NECC-N21837-N21838-N21839-N21840-N21841-N21842 001A 20240808",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_DNAJB1-PRKACA_NECC-N21837-N21842_002B.pdf",
+      "doc_title": "SOP-Protein-Purification DNAJB1-PRKACA NECC-N21837-N21842 002B",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 3,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_Exo_NECC-N21569_001A_20230914.pdf",
+      "doc_title": "SOP-Protein-Purification Exo NECC-N21569 001A 20230914",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 8,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_FBXO45_NBVC-N21055_001A_NCMP-N20058_001A_20240301.pdf",
+      "doc_title": "SOP-Protein-Purification FBXO45 NBVC-N21055 001A NCMP-N20058 001A 20240301",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_FEM1A_NBVC-N20990_001A_20230915.pdf",
+      "doc_title": "SOP-Protein-Purification FEM1A NBVC-N20990 001A 20230915",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 3,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_FEM1B and FEM1C_NBVC-N20992_001A and NBVC-N20991_001A_20230926.pdf",
+      "doc_title": "SOP-Protein-Purification FEM1B and FEM1C NBVC-N20992 001A and NBVC-N20991 001A 20230926",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 3,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_KCMF1_NECC-N21531_001A 20231023.pdf",
+      "doc_title": "SOP-Protein-Purification KCMF1 NECC-N21531 001A 20231023",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 6,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_KCMF1_NECC-N21531_001B_20231122.pdf",
+      "doc_title": "SOP-Protein-Purification KCMF1 NECC-N21531 001B 20231122",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_MBP_NBVC-N21087_001A_20240125.pdf",
+      "doc_title": "SOP-Protein-Purification MBP NBVC-N21087 001A 20240125",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 3,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_NBVC-N21216_002A_20241021.pdf",
+      "doc_title": "SOP-Protein-Purification NBVC-N21216 002A 20241021",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_NBVC-N21218_001A_20240930.pdf",
+      "doc_title": "SOP-Protein-Purification NBVC-N21218 001A 20240930",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 3,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_NBVC-N21218_003A_20241118.pdf",
+      "doc_title": "SOP-Protein-Purification NBVC-N21218 003A 20241118",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_NBVC-N21221_001A_20241004.pdf",
+      "doc_title": "SOP-Protein-Purification NBVC-N21221 001A 20241004",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_NBVC-N21248_001A_20250207.pdf",
+      "doc_title": "SOP-Protein-Purification NBVC-N21248 001A 20250207",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_NBVC-N21251_001A_NBVC-N21253_001A_20250108.pdf",
+      "doc_title": "SOP-Protein-Purification NBVC-N21251 001A NBVC-N21253 001A 20250108",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_NBVC-N21253_002A_20250220.pdf",
+      "doc_title": "SOP-Protein-Purification NBVC-N21253 002A 20250220",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_PDE6D_NBVC-N21754_001A_20240315.pdf",
+      "doc_title": "SOP-Protein-Purification PDE6D NBVC-N21754 001A 20240315",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_PDPK1_NBVC-N21092_001A_0231215.pdf",
+      "doc_title": "SOP-Protein-Purification PDPK1 NBVC-N21092 001A 0231215",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_PDPK1_NBVC-N21092_002A.pdf",
+      "doc_title": "SOP-Protein-Purification PDPK1 NBVC-N21092 002A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_PSMD2_NECC-N21523_20231019.pdf",
+      "doc_title": "SOP-Protein-Purification PSMD2 NECC-N21523 20231019",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_UHRF1_NECC-N21012_001A and NECC-N21012_001B and NECC-N21212_001A.pdf",
+      "doc_title": "SOP-Protein-Purification UHRF1 NECC-N21012 001A and NECC-N21012 001B and NECC-N21212 001A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_WDR5_NECC-N21449_001A and NECC-N21501_001A and NECC-N21501_001B_20231004.pdf",
+      "doc_title": "SOP-Protein-Purification WDR5 NECC-N21449 001A and NECC-N21501 001A and NECC-N21501 001B 20231004",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 4,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Protein-Purification_WDR5_NECC-N21501_001C_20240319.pdf",
+      "doc_title": "SOP-Protein-Purification WDR5 NECC-N21501 001C 20240319",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 3,
+      "page_count": 3,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Purification-6H-TEV-BTK(382-658;A428D).pdf",
+      "doc_title": "SOP-Purification-6H-TEV-BTK(382-658;A428D)",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 10,
+      "page_count": 7,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP-Purification-6H-TEV-BTK(382-658;A428D)_ELSigned.pdf",
+      "doc_title": "SOP-Purification-6H-TEV-BTK(382-658;A428D) ELSigned",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 10,
+      "page_count": 7,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_aSEC.pdf",
+      "doc_title": "SOP aSEC",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_GSTMag Kingfisher Protocol.pdf",
+      "doc_title": "SOP GSTMag Kingfisher Protocol",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 6,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_NBVC-N20392_IRF5 FL monomer_Purification.pdf",
+      "doc_title": "SOP NBVC-N20392 IRF5 FL monomer Purification",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 10,
+      "page_count": 7,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_NBVC-N20392_IRF5 FL monomer_Purification_Signed.pdf",
+      "doc_title": "SOP NBVC-N20392 IRF5 FL monomer Purification Signed",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_NECC-N00038_TEV.pdf",
+      "doc_title": "SOP NECC-N00038 TEV",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 9,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_Protein purification NECC-N21937_N21935_031725_final.pdf",
+      "doc_title": "SOP Protein purification NECC-N21937 N21935 031725 final",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_Protein purification NECC-N21937_N21935_031725_final_EL.pdf",
+      "doc_title": "SOP Protein purification NECC-N21937 N21935 031725 final EL",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 7,
+      "page_count": 5,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_Protein purification NECC-N21937_N21935_031725_signed.pdf",
+      "doc_title": "SOP Protein purification NECC-N21937 N21935 031725 signed",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_Protein purification NECC-N21962_N21964_040725_signed.pdf",
+      "doc_title": "SOP Protein purification NECC-N21962 N21964 040725 signed",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 8,
+      "page_count": 6,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_Protein Purification_NECC-N21473_005A.pdf",
+      "doc_title": "SOP Protein Purification NECC-N21473 005A",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 5,
+      "page_count": 4,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_Purification of SNF05 FL WT protein_signed.pdf",
+      "doc_title": "SOP Purification of SNF05 FL WT protein signed",
+      "instruments": [
+        "general",
+        "pure"
+      ],
+      "chunk_count": 10,
+      "page_count": 7,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "SOP_SEC-MALS.pdf",
+      "doc_title": "SOP SEC-MALS",
+      "instruments": [
+        "general"
+      ],
+      "chunk_count": 16,
+      "page_count": 9,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN5_Admin_Manual.pdf",
+      "doc_title": "UNICORN5 Admin Manual",
+      "instruments": [
+        "general",
+        "prime",
+        "unicorn"
+      ],
+      "chunk_count": 216,
+      "page_count": 208,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN5_User_Reference_Manual.pdf",
+      "doc_title": "UNICORN5 User Reference Manual",
+      "instruments": [
+        "explorer",
+        "fplc",
+        "general",
+        "prime",
+        "unicorn"
+      ],
+      "chunk_count": 609,
+      "page_count": 584,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN7.5_CommandLine_Install_Guide.pdf",
+      "doc_title": "UNICORN7.5 CommandLine Install Guide",
+      "instruments": [
+        "unicorn"
+      ],
+      "chunk_count": 12,
+      "page_count": 12,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN7.5_Compatibility_Matrix.pdf",
+      "doc_title": "UNICORN7.5 Compatibility Matrix",
+      "instruments": [
+        "avant",
+        "explorer",
+        "go",
+        "process",
+        "pure",
+        "unicorn"
+      ],
+      "chunk_count": 25,
+      "page_count": 24,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN7.5_Evaluation_Manual.pdf",
+      "doc_title": "UNICORN7.5 Evaluation Manual",
+      "instruments": [
+        "general",
+        "process",
+        "unicorn"
+      ],
+      "chunk_count": 285,
+      "page_count": 274,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN7.5_Privacy_Security_Manual.pdf",
+      "doc_title": "UNICORN7.5 Privacy Security Manual",
+      "instruments": [
+        "general",
+        "unicorn"
+      ],
+      "chunk_count": 44,
+      "page_count": 41,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN7.5_Security_Hardening.pdf",
+      "doc_title": "UNICORN7.5 Security Hardening",
+      "instruments": [
+        "unicorn"
+      ],
+      "chunk_count": 23,
+      "page_count": 23,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN7.5_Software_Change_Description.pdf",
+      "doc_title": "UNICORN7.5 Software Change Description",
+      "instruments": [
+        "avant",
+        "pilot_600",
+        "pure",
+        "unicorn"
+      ],
+      "chunk_count": 29,
+      "page_count": 29,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN7.5_System_Control_Manual.pdf",
+      "doc_title": "UNICORN7.5 System Control Manual",
+      "instruments": [
+        "unicorn"
+      ],
+      "chunk_count": 51,
+      "page_count": 49,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN7_Evaluation_Manual.pdf",
+      "doc_title": "UNICORN7 Evaluation Manual",
+      "instruments": [
+        "general",
+        "process",
+        "unicorn"
+      ],
+      "chunk_count": 293,
+      "page_count": 282,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN7_Method_Manual.pdf",
+      "doc_title": "UNICORN7 Method Manual",
+      "instruments": [
+        "avant",
+        "general",
+        "pure",
+        "unicorn"
+      ],
+      "chunk_count": 411,
+      "page_count": 400,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN7_Software_Overview.pdf",
+      "doc_title": "UNICORN7 Software Overview",
+      "instruments": [
+        "avant",
+        "general",
+        "pure",
+        "unicorn"
+      ],
+      "chunk_count": 14,
+      "page_count": 7,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    },
+    {
+      "source_file": "UNICORN7_System_Control_Manual.pdf",
+      "doc_title": "UNICORN7 System Control Manual",
+      "instruments": [
+        "general",
+        "unicorn"
+      ],
+      "chunk_count": 53,
+      "page_count": 52,
+      "category": "base",
+      "added_at": "2026-04-20T21:52:37.027412+00:00"
+    }
+  ]
+}
