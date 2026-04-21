@@ -13,6 +13,18 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 const SAFE_ERROR_PATTERN = /^[\w\s.,!?:()\-']{0,200}$/;
 
+/** Create an AbortSignal that fires after `ms` milliseconds. */
+function timeoutSignal(ms: number): AbortSignal {
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), ms);
+  return controller.signal;
+}
+
+// Default timeouts (milliseconds)
+const DEFAULT_TIMEOUT = 30_000;   // 30 s for normal requests
+const CHAT_TIMEOUT = 120_000;     // 2 min for chat (Claude API can be slow)
+const UPLOAD_TIMEOUT = 300_000;   // 5 min for uploads (large PDF ingestion)
+
 async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
     let message = `Request failed (HTTP ${res.status})`;
@@ -47,24 +59,25 @@ export async function sendMessage(
       session_id: sessionId,
       instrument_filter: instrumentFilter,
     }),
+    signal: timeoutSignal(CHAT_TIMEOUT),
   });
   return handleResponse<ChatResponse>(res);
 }
 
 export async function getSessions(): Promise<Session[]> {
-  const res = await fetch(`${API_URL}/api/sessions`);
+  const res = await fetch(`${API_URL}/api/sessions`, { signal: timeoutSignal(DEFAULT_TIMEOUT) });
   return handleResponse<Session[]>(res);
 }
 
 export async function getSession(
   id: string
 ): Promise<{ session_id: string; session: Session; messages: Message[] }> {
-  const res = await fetch(`${API_URL}/api/sessions/${id}`);
+  const res = await fetch(`${API_URL}/api/sessions/${id}`, { signal: timeoutSignal(DEFAULT_TIMEOUT) });
   return handleResponse<{ session_id: string; session: Session; messages: Message[] }>(res);
 }
 
 export async function deleteSession(id: string): Promise<void> {
-  const res = await fetch(`${API_URL}/api/sessions/${id}`, { method: "DELETE" });
+  const res = await fetch(`${API_URL}/api/sessions/${id}`, { method: "DELETE", signal: timeoutSignal(DEFAULT_TIMEOUT) });
   await handleResponse<void>(res);
 }
 
@@ -75,6 +88,7 @@ export async function generateProtocol(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(request),
+    signal: timeoutSignal(CHAT_TIMEOUT),
   });
   return handleResponse<ProtocolResponse>(res);
 }
@@ -84,7 +98,7 @@ export async function generateProtocol(
 // ---------------------------------------------------------------------------
 
 export async function getApiKeyStatus(): Promise<ApiKeyStatus> {
-  const res = await fetch(`${API_URL}/api/settings/api-key`);
+  const res = await fetch(`${API_URL}/api/settings/api-key`, { signal: timeoutSignal(DEFAULT_TIMEOUT) });
   return handleResponse<ApiKeyStatus>(res);
 }
 
@@ -93,12 +107,13 @@ export async function saveApiKey(apiKey: string): Promise<void> {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ api_key: apiKey }),
+    signal: timeoutSignal(DEFAULT_TIMEOUT),
   });
   await handleResponse<{ status: string }>(res);
 }
 
 export async function deleteApiKey(): Promise<void> {
-  const res = await fetch(`${API_URL}/api/settings/api-key`, { method: "DELETE" });
+  const res = await fetch(`${API_URL}/api/settings/api-key`, { method: "DELETE", signal: timeoutSignal(DEFAULT_TIMEOUT) });
   await handleResponse<{ status: string }>(res);
 }
 
@@ -107,14 +122,14 @@ export async function deleteApiKey(): Promise<void> {
 // ---------------------------------------------------------------------------
 
 export async function getKnowledgeBase(): Promise<KbListResponse> {
-  const res = await fetch(`${API_URL}/api/knowledge-base`);
+  const res = await fetch(`${API_URL}/api/knowledge-base`, { signal: timeoutSignal(DEFAULT_TIMEOUT) });
   return handleResponse<KbListResponse>(res);
 }
 
 export async function deleteKbDocument(sourceFile: string): Promise<void> {
   const res = await fetch(
     `${API_URL}/api/knowledge-base/${encodeURIComponent(sourceFile)}`,
-    { method: "DELETE" }
+    { method: "DELETE", signal: timeoutSignal(DEFAULT_TIMEOUT) }
   );
   await handleResponse<{ status: string }>(res);
 }
@@ -136,6 +151,7 @@ export async function* uploadDocuments(
   const res = await fetch(`${API_URL}/api/knowledge-base/upload`, {
     method: "POST",
     body: formData,
+    signal: timeoutSignal(UPLOAD_TIMEOUT),
   });
 
   if (!res.ok) {

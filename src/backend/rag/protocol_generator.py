@@ -64,11 +64,29 @@ async def generate_protocol(
     instrument = _validate_instrument(instrument)
     purification_type = _validate_purification_type(purification_type)
 
-    # Sanitise free-text fields — strip null bytes and limit length
-    target_protein = target_protein.replace("\x00", "").strip()[:200]
-    column = (column or "").replace("\x00", "").strip()[:100] or None
-    sample_volume = (sample_volume or "").replace("\x00", "").strip()[:50] or None
-    additional_notes = (additional_notes or "").replace("\x00", "").strip()[:500] or None
+    # Sanitise free-text fields — strip null bytes and limit length.
+    # Track truncations so we can warn the user.
+    warnings: list[str] = []
+
+    raw_protein = target_protein.replace("\x00", "").strip()
+    target_protein = raw_protein[:200]
+    if len(raw_protein) > 200:
+        warnings.append("Target protein name was truncated to 200 characters.")
+
+    raw_column = (column or "").replace("\x00", "").strip()
+    column = raw_column[:100] or None
+    if len(raw_column) > 100:
+        warnings.append("Column info was truncated to 100 characters.")
+
+    raw_volume = (sample_volume or "").replace("\x00", "").strip()
+    sample_volume = raw_volume[:50] or None
+    if len(raw_volume) > 50:
+        warnings.append("Sample volume was truncated to 50 characters.")
+
+    raw_notes = (additional_notes or "").replace("\x00", "").strip()
+    additional_notes = raw_notes[:500] or None
+    if len(raw_notes) > 500:
+        warnings.append("Additional notes were truncated to 500 characters.")
 
     if not target_protein:
         raise ValueError("target_protein cannot be empty.")
@@ -187,8 +205,8 @@ Be specific and practical. Lab scientists should be able to follow this protocol
             else f"{target_protein} Purification Protocol"
         )
 
-        # Extract safety warnings
-        warnings: list[str] = []
+        # Extract safety warnings from the generated protocol text
+        safety_warnings: list[str] = []
         safety_section = re.search(
             r"##\s+\d+\.\s+Safety Precautions\n(.*?)(?=\n##|\Z)", protocol_text, re.DOTALL
         )
@@ -196,12 +214,15 @@ Be specific and practical. Lab scientists should be able to follow this protocol
             for line in safety_section.group(1).strip().splitlines():
                 line = line.strip().lstrip("-•*").strip()
                 if line:
-                    warnings.append(line)
+                    safety_warnings.append(line)
+
+        # Merge input truncation warnings (from validation above) with safety warnings
+        all_warnings = warnings + safety_warnings[:5]
 
         return {
             "protocol_markdown": protocol_text,
             "protocol_title": protocol_title,
-            "warnings": warnings[:5],
+            "warnings": all_warnings,
         }
 
     except ValueError:

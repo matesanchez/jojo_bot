@@ -13,11 +13,18 @@ from __future__ import annotations
 
 import json
 import logging
+import threading
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
+
+# Serialize all read-modify-write operations on kb_manifest.json.
+# Without this, two concurrent uploads can both read the same manifest,
+# each append their own documents, and the second write silently drops
+# the first upload's entries (TOCTOU race).
+_manifest_lock = threading.Lock()
 
 _MANIFEST_VERSION = 1
 
@@ -127,27 +134,29 @@ def add_documents(new_docs: list[dict]) -> None:
     Each dict should contain: source_file, doc_title, instruments, chunk_count,
     page_count, category, added_at.
     """
-    manifest = load_manifest()
-    existing = {d["source_file"]: i for i, d in enumerate(manifest["documents"])}
+    with _manifest_lock:
+        manifest = load_manifest()
+        existing = {d["source_file"]: i for i, d in enumerate(manifest["documents"])}
 
-    for doc in new_docs:
-        sf = doc["source_file"]
-        if sf in existing:
-            # Update in place (re-upload replaces old entry)
-            manifest["documents"][existing[sf]] = doc
-        else:
-            manifest["documents"].append(doc)
+        for doc in new_docs:
+            sf = doc["source_file"]
+            if sf in existing:
+                # Update in place (re-upload replaces old entry)
+                manifest["documents"][existing[sf]] = doc
+            else:
+                manifest["documents"].append(doc)
 
-    _save_manifest(manifest)
+        _save_manifest(manifest)
 
 
 def remove_document(source_file: str) -> bool:
     """Remove a document entry. Returns True if found and removed."""
-    manifest = load_manifest()
-    before = len(manifest["documents"])
-    manifest["documents"] = [d for d in manifest["documents"] if d["source_file"] != source_file]
-    if len(manifest["documents"]) < before:
-        _save_manifest(manifest)
+    with _manifest_lock:
+        manifest = load_manifest()
+        before = len(manifest["documents"])
+        manifest["documents"] = [d for d in manifest["documents"] if d["source_file"] != source_file]
+        if len(manifest["documents"]) < before:
+            _save_manifest(manifest)
         return True
     return False
 
@@ -162,9 +171,9 @@ def get_documents() -> list[dict]:
     Auto-bootstraps from ChromaDB on first call if the manifest is missing.
     """
     path = _manifest_path()
-    logger.info("Manifest path: %s (exists=%s)", path, path.exists())
+    logger.debug("Manifest path: %s (exists=%s)", path, path.exists())
     if not path.exists():
         bootstrap_from_chromadb()
     docs = load_manifest().get("documents", [])
-    logger.info("Loaded %d documents from manifest", len(docs))
+    logger.debug("Loaded %d documents from manifest", len(docs))
     return docs

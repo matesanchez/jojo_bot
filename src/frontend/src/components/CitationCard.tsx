@@ -40,7 +40,7 @@ export default function CitationCard({ citation, index }: Props) {
         {citation.section && (
           <span className="text-gray-500 text-xs truncate max-w-[120px]">{citation.section}</span>
         )}
-        {citation.page && (
+        {citation.page != null && citation.page !== 0 && (
           <span className="text-gray-400 text-xs flex-shrink-0">p. {citation.page}</span>
         )}
         {expanded ? (

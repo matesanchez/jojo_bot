@@ -111,42 +111,44 @@ def recursive_split(text: str, max_chars: int = 2000, overlap_chars: int = 200) 
 def extract_chunks_from_pdf(pdf_path: Path) -> list[dict]:
     """Extract text chunks from a PDF, returning a list of chunk dicts."""
     doc = fitz.open(str(pdf_path))
-    filename = pdf_path.name
-    doc_title = get_doc_title(filename)
-    chunks = []
-    chunk_index = 0
+    try:
+        filename = pdf_path.name
+        doc_title = get_doc_title(filename)
+        chunks = []
+        chunk_index = 0
 
-    for page_num in range(len(doc)):
-        page = doc[page_num]
-        text = page.get_text("text")
-        if not text.strip():
-            continue
-
-        page_chunks = recursive_split(text, max_chars=2000, overlap_chars=200)
-        for chunk_text in page_chunks:
-            if not chunk_text.strip():
+        for page_num in range(len(doc)):
+            page = doc[page_num]
+            text = page.get_text("text")
+            if not text.strip():
                 continue
 
-            # Detect section header
-            first_line = chunk_text.split("\n")[0].strip()
-            section_header = first_line if looks_like_heading(first_line) else ""
+            page_chunks = recursive_split(text, max_chars=2000, overlap_chars=200)
+            for chunk_text in page_chunks:
+                if not chunk_text.strip():
+                    continue
 
-            # Detect instrument
-            instrument = detect_instrument(chunk_text)
+                # Detect section header
+                first_line = chunk_text.split("\n")[0].strip()
+                section_header = first_line if looks_like_heading(first_line) else ""
 
-            chunks.append({
-                "text": chunk_text,
-                "source_file": filename,
-                "doc_title": doc_title,
-                "section_header": section_header,
-                "page_number": page_num + 1,
-                "chunk_index": chunk_index,
-                "instrument": instrument,
-            })
-            chunk_index += 1
+                # Detect instrument
+                instrument = detect_instrument(chunk_text)
 
-    doc.close()
-    return chunks
+                chunks.append({
+                    "text": chunk_text,
+                    "source_file": filename,
+                    "doc_title": doc_title,
+                    "section_header": section_header,
+                    "page_number": page_num + 1,
+                    "chunk_index": chunk_index,
+                    "instrument": instrument,
+                })
+                chunk_index += 1
+
+        return chunks
+    finally:
+        doc.close()
 
 
 def ingest(input_dir: str, reset: bool = False) -> None:

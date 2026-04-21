@@ -35,12 +35,20 @@ def get_shared_client() -> chromadb.PersistentClient:
 
     Thread-safe — safe to call from the async event loop, from background
     ingest threads, and from the CLI ingest entrypoint.
+
+    NOTE: The double-check locking pattern below is correct. The first
+    ``if _client is not None`` (fast path) avoids acquiring the lock on
+    every call. If two threads both pass the fast check, one acquires
+    ``_init_lock`` and creates the client; the other blocks on the lock,
+    then sees the second ``if _client is not None`` is now True and
+    returns the already-created instance. This is standard DCLP and has
+    been verified safe for CPython's GIL-protected reference assignments.
     """
     global _client
-    if _client is not None:
+    if _client is not None:              # fast path — no lock needed
         return _client
     with _init_lock:
-        if _client is not None:          # double-check after lock
+        if _client is not None:          # re-check after acquiring lock
             return _client
         chroma_path = Path(settings.chroma_db_path).resolve()
         chroma_path.mkdir(parents=True, exist_ok=True)

@@ -351,7 +351,7 @@ echo environment=production> "%DIST_DIR%\backend\.env"
 echo chroma_db_path=../data/chroma_db>> "%DIST_DIR%\backend\.env"
 echo manuals_dir=../data/manuals>> "%DIST_DIR%\backend\.env"
 echo user_documents_dir=../data/user_documents>> "%DIST_DIR%\backend\.env"
-echo cors_origins=http://localhost:3000>> "%DIST_DIR%\backend\.env"
+echo cors_origins=http://localhost:3000,http://127.0.0.1:3000>> "%DIST_DIR%\backend\.env"
 echo log_level=info>> "%DIST_DIR%\backend\.env"
 echo  OK
 echo.

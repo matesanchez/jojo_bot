@@ -7,6 +7,7 @@ import asyncio
 import json
 import logging
 import queue as thread_queue
+import sys
 import threading
 import time
 from collections import defaultdict
@@ -43,6 +44,7 @@ logger = logging.getLogger(__name__)
 # Rate limiting (in-memory per session_id — for production use Redis)
 # ---------------------------------------------------------------------------
 _rate_limit: dict[str, list[float]] = defaultdict(list)
+_rate_limit_lock = threading.Lock()
 
 # Safety cap — an abusive client rotating IPs/session-ids could otherwise
 # balloon this dict and leak memory over time. We keep at most this many
@@ -75,15 +77,18 @@ def _purge_stale_rate_limit_keys(now: float) -> None:
 
 
 def _check_rate(key: str, max_requests: int, window_seconds: int) -> None:
-    now = time.time()
-    window_start = now - window_seconds
-    _rate_limit[key] = [t for t in _rate_limit[key] if t > window_start]
-    if len(_rate_limit[key]) >= max_requests:
-        raise HTTPException(status_code=429, detail="Too many requests. Please slow down.")
-    _rate_limit[key].append(now)
-    # Opportunistic cleanup — bounds memory growth without needing a timer.
-    if len(_rate_limit) > _RATE_LIMIT_MAX_KEYS:
-        _purge_stale_rate_limit_keys(now)
+    # Lock protects against concurrent access from background threads (e.g.
+    # the ingest thread) and any future multi-worker configuration.
+    with _rate_limit_lock:
+        now = time.time()
+        window_start = now - window_seconds
+        _rate_limit[key] = [t for t in _rate_limit[key] if t > window_start]
+        if len(_rate_limit[key]) >= max_requests:
+            raise HTTPException(status_code=429, detail="Too many requests. Please slow down.")
+        _rate_limit[key].append(now)
+        # Opportunistic cleanup — bounds memory growth without needing a timer.
+        if len(_rate_limit) > _RATE_LIMIT_MAX_KEYS:
+            _purge_stale_rate_limit_keys(now)
 
 
 def check_rate_limit(session_id: str) -> None:
@@ -226,6 +231,9 @@ async def chat(req: ChatRequest, db: AsyncSession = Depends(get_db)):
             raise HTTPException(status_code=400, detail=str(e))
 
         history = await get_history(db, session_id, max_turns=6)
+        # NOTE: should_search_web is intentionally NOT wrapped in its own
+        # try-except — if it raises, the outer except Exception (line 258)
+        # catches it and returns HTTP 500. This was verified during audit.
         use_web = should_search_web(req.message, chunks)
         result = await generate(
             query=req.message,
@@ -479,6 +487,14 @@ async def upload_documents(
             logger.warning(f"Blocked path traversal attempt in upload filename: {upload.filename!r}")
             raise HTTPException(status_code=400, detail=f"Invalid filename: {upload.filename}")
 
+        # Early reject based on declared size (avoids loading huge files into RAM).
+        # upload.size is set by Starlette from the Content-Length of the part.
+        if upload.size and upload.size > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=413,
+                detail=f"File '{safe_name}' is too large (max 50 MB).",
+            )
+
         content = await upload.read()
         if len(content) > MAX_FILE_SIZE:
             raise HTTPException(
@@ -641,9 +657,13 @@ if __name__ == "__main__":
     # (e.g. a phone on the same Wi-Fi) can opt in with JOJO_DEV_LAN=1.
     _dev_lan = _os.environ.get("JOJO_DEV_LAN", "").strip().lower() in {"1", "true", "yes"}
     host = "0.0.0.0" if (_dev_lan and not settings.is_production) else "127.0.0.1"
+    # When frozen by PyInstaller there is no "main.py" on disk, so uvicorn
+    # cannot resolve the string "main:app".  Pass the app object directly.
+    # reload is also disabled when frozen — there are no source files to watch.
+    _frozen = getattr(sys, "frozen", False)
     uvicorn.run(
-        "main:app",
+        app if _frozen else "main:app",
         host=host,
         port=8000,
-        reload=not settings.is_production,
+        reload=False if _frozen else (not settings.is_production),
     )

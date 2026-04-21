@@ -9,11 +9,39 @@
 
 import sys
 from pathlib import Path
+from PyInstaller.utils.hooks import collect_submodules, collect_data_files
 
 block_cipher = None
 
 # Collect all source files (excluding venv)
 src_dir = Path(SPECPATH)
+
+# ---------------------------------------------------------------------------
+# Auto-collect submodules and data files for packages with complex internals.
+#
+# ChromaDB has dozens of internal submodules (embedding functions, segment
+# managers, DB backends, etc.) that it imports dynamically.  Rather than
+# maintaining a fragile hand-written list, let PyInstaller discover them all.
+# This is what fixed the "ONNXMiniLM_L6_V2 is not defined" crash.
+#
+# onnxruntime ships native .dll/.so inference engines and provider libs.
+# tokenizers is a Rust-compiled package with native extensions.
+# Both are required by ChromaDB's default embedding function at runtime.
+# ---------------------------------------------------------------------------
+chromadb_imports  = collect_submodules("chromadb")
+chromadb_datas    = collect_data_files("chromadb")
+
+onnx_imports      = collect_submodules("onnxruntime")
+onnx_datas        = collect_data_files("onnxruntime")
+
+tokenizers_datas  = collect_data_files("tokenizers")
+
+# Pydantic v2 uses compiled Rust core — collect its native libs
+pydantic_datas    = collect_data_files("pydantic")
+
+# anthropic SDK has internal sub-packages (types, resources) that are
+# discovered at import time
+anthropic_imports = collect_submodules("anthropic")
 
 a = Analysis(
     [str(src_dir / "main.py")],
@@ -22,14 +50,14 @@ a = Analysis(
     datas=[
         # Include prompts folder
         (str(src_dir.parent.parent / "prompts"), "prompts"),
-        # ChromaDB needs its migrations folder
-        ("venv/Lib/site-packages/chromadb/migrations", "chromadb/migrations"),
-    ],
-    hiddenimports=[
+    ] + chromadb_datas + onnx_datas + tokenizers_datas + pydantic_datas,
+    hiddenimports=chromadb_imports + onnx_imports + anthropic_imports + [
         # FastAPI / Starlette
         "fastapi",
         "fastapi.middleware.cors",
+        "fastapi.responses",
         "starlette.middleware.cors",
+        "starlette.responses",
         "starlette.routing",
         "uvicorn",
         "uvicorn.logging",
@@ -46,40 +74,31 @@ a = Analysis(
         "pydantic",
         "pydantic_settings",
         "pydantic.v1",
+        "pydantic_core",
         # Database
         "sqlalchemy",
         "sqlalchemy.ext.asyncio",
         "aiosqlite",
-        # ChromaDB
-        "chromadb",
-        "chromadb.api",
-        "chromadb.api.client",
-        "chromadb.config",
-        "chromadb.db",
-        "chromadb.db.impl",
-        "chromadb.db.impl.sqlite",
-        "chromadb.segment",
-        "chromadb.segment.impl",
-        "chromadb.segment.impl.manager",
-        "chromadb.segment.impl.manager.local",
-        "chromadb.segment.impl.metadata",
-        "chromadb.segment.impl.metadata.sqlite",
-        "chromadb.segment.impl.vector",
-        "chromadb.segment.impl.vector.local_hnsw",
-        "chromadb.telemetry",
-        "chromadb.telemetry.product",
-        "chromadb.telemetry.product.events",
+        # ChromaDB runtime dependencies that live outside the chromadb package
+        "tokenizers",
+        "tenacity",
+        "tqdm",
         "hnswlib",
-        # Anthropic SDK
-        "anthropic",
+        # Anthropic SDK transitive dependencies
         "httpx",
         "httpcore",
         "anyio",
         "anyio._backends._asyncio",
-        # PyMuPDF
+        "sniffio",
+        "certifi",
+        "h11",
+        "idna",
+        # PyMuPDF (C extension for PDF parsing)
         "fitz",
         # dotenv
         "dotenv",
+        # numpy (required by chromadb — see NOTE in excludes)
+        "numpy",
         # Our modules
         "appdata",
         "config",
